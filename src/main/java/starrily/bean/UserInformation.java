@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class UserInformation implements Serializable{
+public class UserInformation implements Serializable {
 
 	/** シリアルバージョンUID. */
 	private static final long serialVersionUID = 7783915365374534702L;
@@ -38,6 +38,5 @@ public class UserInformation implements Serializable{
 	private String updateDate;
 	/** 削除フラグ */
 	private String deleteFlg;
-
 
 }

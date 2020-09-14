@@ -12,19 +12,18 @@ public class SkillSheet implements Serializable {
 	private static final long serialVersionUID = -5549487585343137022L;
 
 	/** DBの全ての情報　*/
-	private String AllDb;
+	public String allDb;
 	/** FwNwの全ての情報　*/
-	private String AllFwNw;
+	public String allFwNw;
 	/** Osの全ての情報　*/
-	private String AllOs;
+	public String allOs;
 	/** 言語の全ての情報　*/
-	private String AllLang;
+	public String allLang;
 	/** その他の全ての情報　*/
-	private String AllOther;
+	public String allOther;
 
 	/** 権限　*/
 	private int userRole;
-
 	/** ユーザーID */
 	private int userId;
 	/** 経歴ID */
@@ -44,10 +43,8 @@ public class SkillSheet implements Serializable {
 	private String userFinalEducation;
 	/** 現住所 */
 	private String userAddress;
-
-	/** 年齢のカラム追加 */
+	/** 年齢のカラム */
 	private int userAge;
-
 	/** 最寄駅_線 */
 	private String userStationLine;
 	/** 最寄駅_駅 */

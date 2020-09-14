@@ -27,7 +27,7 @@
 	</form>
 	</div>
 
-	<div class="box" th:each="skillSheetBasicList : ${skillSheetBasicList}" th:object="${skillSheetBasicList}">
+	<div class="box" th:object="${skillSheetBasicList}">
 	 	<div class="box-title">基本情報</div>
 
 		<form th:method="POST" th:action="@{/skillsheet_information_update}">

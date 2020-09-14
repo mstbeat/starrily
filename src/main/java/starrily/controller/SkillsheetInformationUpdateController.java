@@ -35,7 +35,7 @@ public class SkillsheetInformationUpdateController {
 	@PostMapping("/skillsheet_information_update")
 	public String basicInformation(Model model, @RequestParam(name = "userId") int userId) {
 
-		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBase(userId);
+		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
 		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
 
 		List<Dropdown> dropdownInfo = starrilyService.getDropdownInfo(6);

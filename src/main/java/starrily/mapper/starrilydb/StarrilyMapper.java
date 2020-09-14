@@ -18,8 +18,6 @@ import starrily.bean.UserInformation;
 @Mapper
 public interface StarrilyMapper {
 
-	public SkillSheet getSkillSheetBase(int userId);
-
 	/**
 	* ドロップダウン情報取得.
 	* @param itemNumber ドロップダウンのitem_numberの値
@@ -88,7 +86,7 @@ public interface StarrilyMapper {
 	 * @param userId ユーザーID
 	 * @return 基本情報
 	 */
-	public List<SkillSheet> getSkillSheetBasic(int userId);
+	public SkillSheet getSkillSheetBasic(int userId);
 
 	/**
 	 * 案件基本情報取得.

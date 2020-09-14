@@ -46,7 +46,7 @@ public class SkillsheetReferenceController {
 		// int LoginUserId = (int) session.getAttribute("userId");
 		// int role = (int) session.getAttribute("role");
 
-		List<SkillSheet> skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
+		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
 		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
 
 		// 案件基本情報を取得

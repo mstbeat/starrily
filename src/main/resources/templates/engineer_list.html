@@ -23,7 +23,6 @@
 		</div>
 			<table class="resultTable tablesorter" id="myTable">
 			<thead>
-
 				<tr class="tableTitle">
 					<th>氏名</th>
 					<th>会社名</th>
@@ -37,7 +36,7 @@
 				 </thead>
 
 				 <tbody>
-				<tr data-href="skillsheet_reference.html">
+				<tr>
 					<td>サンプル氏名あ</td>
 					<td>PDR</td>
 					<td>開発事業部</td>
@@ -46,7 +45,7 @@
 					<td>＃「業界」/年数、＃「DB」/年数、＃「言語１」/年数、
 						<br>＃「言語２」/年数/リーダー経験、＃「その他」検索内によって変わる）</td>
 					<td>提案不可</td>
-					<td><form th:method="get" th:action="@{skillsheet_reference}">
+					<td><form th:method="GET" th:action="@{skillsheet_reference}">
 						<!-- hiddenでuserIdを送る。 -->
 						<input type="hidden" name="userId"></input>
 						<input type="submit" class="nonhoverdefolt backglay" th:value="参照">

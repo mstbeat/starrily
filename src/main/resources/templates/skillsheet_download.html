@@ -12,9 +12,11 @@
 	<main>
 	<h1 class="pagetitle">スキルシートダウンロード</h1>
 
+	 <form th:method="GET" th:action="@{/skillsheet_reference}">
 	 <p class="systemMessage">
 	 <input type="button" onclick="history.back()" value="戻る" class="backButton defolt bottomwidth right rightmargin width">
 	</p>
+	</form>
 
 	<p class="systemMessage subtitle">ダウンロードしたいものをクリックしてください。</p>
 	<p class="errorMessage">エラーメッセージがここに入ります</p>
@@ -44,11 +46,6 @@
 				</form>
 			</div>
 		</div>
-</div>
-<div>
-
-
-
 </div>
 
 </main>

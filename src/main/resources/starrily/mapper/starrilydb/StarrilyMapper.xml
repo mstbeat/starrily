@@ -2,34 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="starrily.mapper.starrilydb.StarrilyMapper">
 
-<!-- 基本情報表示(更新画面)-->
-<select id="getSkillSheetBase" parameterType="Integer" resultType="starrily.bean.SkillSheet">
-    SELECT
-    	SUB.user_id AS userId
-        ,UI.User_name AS userName
-        ,SUB.User_birthday AS userBirthday
-        ,SUB.User_initial_name AS userInitialName
-        ,SUB.User_sex AS userSex
-        ,SUB.User_final_education AS userFinalEducation
-        ,SUB.User_address AS userAddress
-        ,SUB.User_station_line AS userStationLine
-        ,SUB.User_station AS userStation
-        ,SUB.User_appeal AS userAppeal
-        ,SUB.User_certification AS userCertification
-        ,SUB.User_remarks AS userRemarks
-        ,SUB.Update_date AS updateDate
-        ,TIMESTAMPDIFF(YEAR, `user_birthday`, CURDATE()) AS userAge
-   FROM
-        starrilyUserInfo UI
-   JOIN
-        StarrilyUserBasicInfo SUB
-   ON
-        UI.User_id = SUB.User_id
-   WHERE
-        UI.User_id= #{userId}
-        AND UI.Delete_flg = '0'
-</select>
-
 <!-- ドロップダウン情報取得 -->
 <select id="getDropdownInfo" parameterType="Integer" resultType="starrily.bean.Dropdown">
 	SELECT
@@ -303,6 +275,7 @@
         AND UI.Delete_flg = '0'
         AND SUD.Delete_flg = '0'
 </select>
+
 <!--DB情報取得-->
 <select id="getProjectDB" parameterType="Integer" resultType="starrily.bean.SkillSheet">
     SELECT
@@ -345,37 +318,27 @@
 <!--言語情報取得-->
 <select id="getProjectLang" parameterType="Integer" resultType="starrily.bean.SkillSheet">
     SELECT
-        SLI.Career_id AS careerId
-        ,SLI.Language AS language
-        ,SLI.Language_ver AS languageVer
-        ,SLI.Language_period AS languagePeriod
+        Career_id AS careerId
+        ,Language AS language
+        ,Language_ver AS languageVer
+        ,Language_period AS languagePeriod
    FROM
-        StarrilyUserDetailInfo SUD
-   JOIN
-        StarrilyLanguageInfo SLI
-   ON
-        SUD.Career_id = SLI.Career_id
+        StarrilyLanguageInfo
     WHERE
-        SUD.Career_id in  (#{careerId})
-        AND SUD.Delete_flg = '0'
+        Career_id = #{careerId}
 </select>
 
 <!--その他情報取得-->
 <select id="getProjectOther" parameterType="Integer" resultType="starrily.bean.SkillSheet">
     SELECT
-        SOI.Career_id AS careerId
-        ,SOI.Other AS other
-        ,SOI.Other_ver AS otherVer
-        ,SOI.Other_period AS otherPeriod
+        Career_id AS careerId
+        ,Other AS other
+        ,Other_ver AS otherVer
+        ,Other_period AS otherPeriod
    FROM
-        StarrilyUserDetailInfo SUD
-   JOIN
-        StarrilyOtherInfo SOI
-   ON
-        SUD.Career_id = SOI.Career_id
+        StarrilyOtherInfo
     WHERE
-        SUD.Career_id in  (#{careerId})
-        AND SUD.Delete_flg = '0'
+        Career_id = #{careerId}
 </select>
 
 <!--基本情報登録-->

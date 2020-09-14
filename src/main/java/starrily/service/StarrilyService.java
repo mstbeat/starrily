@@ -23,15 +23,6 @@ public class StarrilyService {
 	StarrilyMapper starrilyMapper;
 
 	/**
-	* 基本情報.
-	* @param userId  ユーザーId
-	* @return 基本情報
-	*/
-	public SkillSheet getSkillSheetBase(int userId) {
-		return starrilyMapper.getSkillSheetBase(userId);
-	}
-
-	/**
 	* ドロップダウン情報.
 	* @param itemNumber ドロップダウンテーブルのitem_numberの値
 	* @return スキルシートbeanクラス
@@ -67,6 +58,7 @@ public class StarrilyService {
 	public List<SkillSheet> searchProjectDB(SkillSheet skillSheet) {
 		return starrilyMapper.searchProjectDB(skillSheet);
 	}
+
 
 	/**
 	 * FW/NW情報検索.
@@ -118,7 +110,7 @@ public class StarrilyService {
 	 * @param userId ユーザーID
 	 * @return 基本情報
 	 */
-	public List<SkillSheet> getSkillSheetBasic(int userId) {
+	public SkillSheet getSkillSheetBasic(int userId) {
 		return starrilyMapper.getSkillSheetBasic(userId);
 	}
 
