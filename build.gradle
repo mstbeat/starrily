@@ -39,10 +39,18 @@ dependencies {
     compile 'net.sf.jasperreports:jasperreports:6.12.0'
     compile group: 'com.lowagie', name: 'itext', version: '2.1.7'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+	compile('org.springframework.boot:spring-boot-starter-validation')
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+
 	}
 	testImplementation 'org.springframework.security:spring-security-test'
 }
+
+
+
+
+
+
 
 test {
 	useJUnitPlatform()

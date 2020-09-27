@@ -14,15 +14,19 @@
 <div>
 			<h1 class="pagetitle">エンジニア一覧</h1>
 			<p class="errorMessage" th:text="エラーメッセージがここに入ります"></p>
-			<input type="button" onclick="history.back()" value="戻る" class="backButton right defolt">
+      <form th:action="@{engineer_search}" th:method="post" >
+			<input type="submit" value="戻る" class="backButton right defolt">
+      </form>
+			<!-- <input type="submit" value="戻る" class="backButton"> -->
 		</div>
 
 	<div class="resultList">
 		<div class="listSort">
-			<p><b class="right">表示件数 ○件</b></p>
+			<p><b class="right" th:text="'表示件数 ' + ${count} + '件'"></b></p>
 		</div>
 			<table class="resultTable tablesorter" id="myTable">
 			<thead>
+
 				<tr class="tableTitle">
 					<th>氏名</th>
 					<th>会社名</th>
@@ -36,19 +40,17 @@
 				 </thead>
 
 				 <tbody>
-				<tr>
-					<td>サンプル氏名あ</td>
+				<tr th:each="userInfo : ${userInfo}" th:object="${userInfo}">
+					<td th:text="*{userName}"></td>
 					<td>PDR</td>
 					<td>開発事業部</td>
 					<td>か担当営業</td>
-					<td>xxxx＠xxx.jp</td>
-					<td>＃「業界」/年数、＃「DB」/年数、＃「言語１」/年数、
-						<br>＃「言語２」/年数/リーダー経験、＃「その他」検索内によって変わる）</td>
+					<td th:text="*{userMail}"></td>
+					<td><pre th:text="*{allSkill}"></pre> </td>
 					<td>提案不可</td>
-					<td><form th:method="GET" th:action="@{skillsheet_reference}">
-						<!-- hiddenでuserIdを送る。 -->
-						<input type="hidden" name="userId"></input>
-						<input type="submit" class="nonhoverdefolt backglay" th:value="参照">
+					<td><form th:action="@{skillsheet_reference}" th:method="post">
+					    <input type="hidden" name="userId" th:value="*{userId}">
+						<input type="submit"  class="nonhoverdefolt backglay" th:value="参照">
 					</form></td>
 				</tr>
 			</tbody>

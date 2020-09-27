@@ -3,7 +3,14 @@ package starrily.bean;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
+import starrily.annotation.ArraySize;
+import starrily.annotation.CharacterType;
 
 @Data
 public class SkillSheet implements Serializable {
@@ -23,11 +30,11 @@ public class SkillSheet implements Serializable {
 	public String allOther;
 
 	/** 権限　*/
-	private int userRole;
 	/** ユーザーID */
 	private int userId;
 	/** 経歴ID */
 	private int careerId;
+	private int career_id;
 	/** 氏名 */
 	private String userName;
 	/** フリガナ */
@@ -56,33 +63,64 @@ public class SkillSheet implements Serializable {
 	/** 備考 */
 	private String userRemarks;
 	/** 開始年月 */
+	@NotBlank(message="{EMSG001}")
 	private String startDate;
 	/** 終了年月 */
 	private String finishDate;
+	/** 終了年月が開始年月より過去日になっていないかチェック */
+	@AssertTrue(message="{EMSG107}")
+	public boolean isDateValid() {
+		if (finishDate.isEmpty()) {
+			return true;
+		}
+		if (finishDate.compareTo(startDate) < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	/** 期間 */
 	private int periodDate;
 	/** 業務名 */
+	@Size(max=100, message="{EMSG003}")
+	@NotBlank(message="{EMSG001}")
 	private String businessName;
 	/** 業界 */
+	@Size(max=20, message="{EMSG003}")
 	private String industry;
 	/** チーム人数 */
 	private int teamNumber;
+	/** チーム人数 画面からcontrollerへ渡す用. */
+	@Size(max=4, message="{EMSG003}")
+	@Pattern(regexp = "^[0-9]*$", message="{EMSG004}")
+	private String teamNumberString;
 	/** ポジション */
 	private String position;
 	/** 担当フェーズ */
 	private String chargePhase;
 	/** 業務内容 */
+	@Size(max=1000, message="{EMSG003}")
 	private String businessContent;
 
 	/** データベース 名前＋バージョン */
 	private String dbAll;
 	/** データベース 名前 */
 	private String db;
+	/** データベース 名前(プルダウン)画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", size=20, PADCH="20")
+	private String[] dbPulArray;
 	/** データベース 名前 画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", size=20, PADCH="20")
 	private String[] dbArray;
 	/** データベース バージョン */
 	private String dbVer;
+	/** データベース　バージョン(プルダウン) 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
+	private String[] dbVerPulArray;
 	/** データベース　バージョン 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
 	private String[] dbVerArray;
 	/** データベース 期間 */
 	private int dbPeriod;
@@ -92,10 +130,13 @@ public class SkillSheet implements Serializable {
 	/** FW_NW 名前 */
 	private String fwNw;
 	/** FW_NW 名前 画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", PADCH="", size=20)
 	private String[] fwNwArray;
 	/** FW_NW バージョン */
 	private String fwNwVer;
 	/** FW_NW バージョン 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
 	private String[] fwNwVerArray;
 	/** FW_NW 期間 */
 	private int fwNwPeriod;
@@ -104,11 +145,21 @@ public class SkillSheet implements Serializable {
 	private String languageAll;
 	/** 言語 名前 */
 	private String language;
+	/** 言語 名前(プルダウン)画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", PADCH="", size=20)
+	private String[] languagePulArray;
 	/** 言語 名前 画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", PADCH="", size=20)
 	private String[] languageArray;
 	/** 言語 バージョン */
 	private String languageVer;
+	/** 言語 バージョン(プルダウン)画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
+	private String[] languageVerPulArray;
 	/** 言語 バージョン 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
 	private String[] languageVerArray;
 	/** 言語 期間 */
 	private int languagePeriod;
@@ -117,11 +168,21 @@ public class SkillSheet implements Serializable {
 	private String osAll;
 	/** OS 名前 */
 	private String os;
-	/** os 名前　画面から配列で受け取る用 */
+	/** os 名前(プルダウン)画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", size=20, PADCH="20")
+	private String[] osPulArray;
+	/** os 名前　画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", size=20, PADCH="20")
 	private String[] osArray;
 	/** OS バージョン */
 	private String osVer;
-	/**  os バージョン 画面から配列で受け取る用 */
+	/**  os バージョン(プルダウン)画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
+	private String[] osVerPulArray;
+	/**  os バージョン 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
 	private String[] osVerArray;
 	/** OS 期間 */
 	private int osPeriod;
@@ -130,19 +191,17 @@ public class SkillSheet implements Serializable {
 	private String otherAll;
 	/** その他 名前 */
 	private String other;
-	/**  その他 名前 画面から配列で受け取る用*/
+	/** その他 名前 画面から配列で受け取る用. */
+	@ArraySize(message="{EMSG003}", size=20, PADCH="20")
 	private String[] otherArray;
 	/** その他 バージョン */
 	private String otherVer;
-	/**  その他 バージョン 画面から配列で受け取る用*/
+	/** その他 バージョン 画面から配列で受け取る用. */
+	@CharacterType
+	@ArraySize(PADCH="バージョン", size=20)
 	private String[] otherVerArray;
 	/** その他 期間 */
 	private int otherPeriod;
-
-	/** チーム人数(文字列) */
-	private String teamNumberString;
-	/** 担当フェーズ 画面からcontrollerへ渡す用.*/
-	private String checkboxfaze;
 
 	/** 登録日時 */
 	private String registeredDate;
@@ -150,5 +209,7 @@ public class SkillSheet implements Serializable {
 	private String updateDate;
 	/** 削除フラグ */
 	private String deleteFlg;
+
+	private String allSkill;
 
 }

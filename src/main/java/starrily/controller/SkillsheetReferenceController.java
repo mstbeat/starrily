@@ -7,11 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import starrily.bean.Dropdown;
@@ -31,20 +31,17 @@ public class SkillsheetReferenceController {
 	@Autowired
 	private StarrilyService starrilyService;
 
+	@Autowired
+	private HttpSession session;
+
 	/**
-	 *　スキルシート参照画面を表示
+	 *　スキルシート参照画面を表示(リダイレクトの処理)
 	 * @return　スキルシート参照に返す。
 	 */
 	@GetMapping("/skillsheet_reference")
-	public String skillReference(HttpSession session, Model model, @ModelAttribute @Validated SkillSheet skillSheet,
-			BindingResult result) {
+	public String skillRefer(Model model) {
 
-		// 検索一覧画面からパラメータで受け取るようにする。
-		int userId = 3;
-
-		// userIdをLoginControllerからセッションで受け取る
-		// int LoginUserId = (int) session.getAttribute("userId");
-		// int role = (int) session.getAttribute("role");
+		int userId = (int) session.getAttribute("userId");
 
 		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
 		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
@@ -145,107 +142,130 @@ public class SkillsheetReferenceController {
 
 		model.addAttribute("projectAllList", projectAllList);
 
-		//		ヘッダーからスキルシート参照画面に表示させる(自分のスキルシート )
-		//		List<SkillSheet> skillSheetBasicLis = starrilyService.getSkillSheetBasic(LoginUserId);
-		//		model.addAttribute("skillSheetBasicList", skillSheetBasicLis);
-		//
-		//		// 案件基本情報を取得
-		//		List<SkillSheet> projectAllLis = starrilyService.getProjectAll(LoginUserId);
-		//
-		//		for (SkillSheet forProjectAll : projectAllLis) {
-		//			// DBの情報を取得
-		//			// userIdで同じ数字があった場合、CareerIdの情報のDBを取ってくる
-		//			List<SkillSheet> projectDb = starrilyService.getProjectDB(forProjectAll.getCareerId());
-		//
-		//			String ver = "";
-		//
-		//			for (SkillSheet db : projectDb) {
-		//				String ver2 = null;
-		//				if (db.getDbVer() != null) {
-		//					ver2 = db.getDb() + db.getDbVer();
-		//				} else {
-		//					ver2 = db.getDb();
-		//				}
-		//				ver = ver + ver2 + "\n";
-		//				// 1回目　ver= から文字　ver2  = Mysql
-		//				// 2回目　ver= Mysql + 改行 ver2= MariaDN
-		//			}
-		//			forProjectAll.setAllDb(ver);
-		//
-		//			// フレームワークの情報を取
-		//			List<SkillSheet> projectFwNwList = starrilyService.getProjectFwNw(forProjectAll.getCareerId());
-		//
-		//			String projectFwNw = "";
-		//
-		//			for (SkillSheet ForFwNw : projectFwNwList) {
-		//
-		//				String FwNw = null;
-		//
-		//				if (ForFwNw.getFwNwVer() != null) {
-		//					FwNw = ForFwNw.getFwNw() + ForFwNw.getFwNwVer();
-		//				} else {
-		//					FwNw = ForFwNw.getFwNw();
-		//				}
-		//				projectFwNw = projectFwNw + FwNw + "\n";
-		//			}
-		//			forProjectAll.setAllFwNw(projectFwNw);
-		//
-		//			// OSの情報を取得
-		//			List<SkillSheet> projectOsList = starrilyService.getProjectOS(forProjectAll.getCareerId());
-		//
-		//			String projectOs = "";
-		//
-		//			for (SkillSheet ForOs : projectOsList) {
-		//
-		//				String Os = null;
-		//
-		//				if (ForOs.getOsVer() != null) {
-		//					Os = ForOs.getOs() + ForOs.getOsVer();
-		//				} else {
-		//					Os = ForOs.getOs();
-		//				}
-		//				projectOs = projectOs + Os + "\n";
-		//			}
-		//			forProjectAll.setAllOs(projectOs);
-		//
-		//			// 言語の情報を取得
-		//			List<SkillSheet> projectLangList = starrilyService.getProjectLang(forProjectAll.getCareerId());
-		//
-		//			String projectLang = "";
-		//
-		//			for (SkillSheet ForProjectLang : projectLangList) {
-		//
-		//				String language = null;
-		//
-		//				if (ForProjectLang.getOsVer() != null) {
-		//					language = ForProjectLang.getLanguage() + ForProjectLang.getLanguageVer();
-		//				} else {
-		//					language = ForProjectLang.getLanguage();
-		//				}
-		//				projectLang = projectLang + language + "\n";
-		//			}
-		//			forProjectAll.setAllLang(projectLang);
-		//
-		//			// その他の情報を取得
-		//			List<SkillSheet> projectOtherList = starrilyService.getProjectOther(forProjectAll.getCareerId());
-		//
-		//			String projectOther = "";
-		//
-		//			for (SkillSheet ForProjectOther : projectOtherList) {
-		//
-		//				String other = null;
-		//
-		//				if (ForProjectOther.getOsVer() != null) {
-		//					other = ForProjectOther.getOther() + ForProjectOther.getOtherVer();
-		//				} else {
-		//					other = ForProjectOther.getOther();
-		//				}
-		//				projectOther = projectOther + other + "\n";
-		//			}
-		//			forProjectAll.setAllOther(projectOther);
-		//		}
-		//
-		//		model.addAttribute("projectAllList", projectAllList);
+		// 学歴のプルダウンをDBから取ってくる
+		List<Dropdown> dropdownInfo = starrilyService.getDropdownInfo(6);
+		model.addAttribute("dropdownInfo", dropdownInfo);
+
+		return "skillsheet_reference";
+	}
+
+	/**
+	 *　スキルシート参照画面を表示
+	 * @return　スキルシート参照に返す。
+	 */
+	@PostMapping("/skillsheet_reference")
+	public String skillReference(@RequestParam(name = "userId") int userId, Model model) {
+
+		// 検索一覧画面からパラメータで受け取るようにする。
+		// userIdをLoginControllerからセッションで受け取る
+		// int LoginUserId = (int) session.getAttribute("userId");
+		// int role = (int) session.getAttribute("role");
+		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
+		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
+
+		// 案件基本情報を取得
+		List<SkillSheet> projectAllList = starrilyService.getProjectAll(userId);
+
+		for (SkillSheet forProjectAll : projectAllList) {
+			// DBの情報を取得
+			// userIdで同じ数字があった場合、CareerIdの情報のDBを取ってくる
+			List<SkillSheet> projectDbList = starrilyService.getProjectDB(forProjectAll.getCareerId());
+
+			String projectDb = "";
+
+			for (SkillSheet forDb : projectDbList) {
+				String db = null;
+				if (forDb.getDbVer() != null) {
+					db = forDb.getDb() + forDb.getDbVer();
+				} else {
+					db = forDb.getDb();
+				}
+				projectDb = projectDb + db + "\n";
+			}
+			forProjectAll.setAllDb(projectDb);
+
+			// フレームワークの情報を取得
+			List<SkillSheet> projectFwNwList = starrilyService.getProjectFwNw(forProjectAll.getCareerId());
+
+			String projectFwNw = "";
+
+			for (SkillSheet ForFwNw : projectFwNwList) {
+
+				String FwNw = null;
+
+				if (ForFwNw.getFwNwVer() != null) {
+					FwNw = ForFwNw.getFwNw() + ForFwNw.getFwNwVer();
+				} else {
+					FwNw = ForFwNw.getFwNw();
+				}
+				projectFwNw = projectFwNw + FwNw + "\n";
+			}
+			forProjectAll.setAllFwNw(projectFwNw);
+
+			// OSの情報を取得
+			List<SkillSheet> projectOsList = starrilyService.getProjectOS(forProjectAll.getCareerId());
+
+			String projectOs = "";
+
+			for (SkillSheet ForOs : projectOsList) {
+
+				String Os = null;
+
+				if (ForOs.getOsVer() != null) {
+					Os = ForOs.getOs() + ForOs.getOsVer();
+				} else {
+					Os = ForOs.getOs();
+				}
+				projectOs = projectOs + Os + "\n";
+			}
+			forProjectAll.setAllOs(projectOs);
+
+			// 言語の情報を取得
+			List<SkillSheet> projectLangList = starrilyService.getProjectLang(forProjectAll.getCareerId());
+
+			String projectLang = "";
+
+			for (SkillSheet ForProjectLang : projectLangList) {
+
+				String language = null;
+
+				if (ForProjectLang.getOsVer() != null) {
+					language = ForProjectLang.getLanguage() + ForProjectLang.getLanguageVer();
+				} else {
+					language = ForProjectLang.getLanguage();
+				}
+				projectLang = projectLang + language + "\n";
+			}
+			forProjectAll.setAllLang(projectLang);
+
+			// その他の情報を取得
+			List<SkillSheet> projectOtherList = starrilyService.getProjectOther(forProjectAll.getCareerId());
+
+			String projectOther = "";
+
+			for (SkillSheet ForProjectOther : projectOtherList) {
+
+				String other = null;
+
+				if (ForProjectOther.getOsVer() != null) {
+					other = ForProjectOther.getOther() + ForProjectOther.getOtherVer();
+				} else {
+					other = ForProjectOther.getOther();
+				}
+				projectOther = projectOther + other + "\n";
+			}
+			forProjectAll.setAllOther(projectOther);
+
+			if (forProjectAll.getFinishDate().equals("0000年00月")) {
+				forProjectAll.setFinishDate("未定");
+			}
+		}
+		model.addAttribute("projectAllList", projectAllList);
+
+		if (userId == skillSheetBasicList.getUserId()) {
+			int one = 1;
+			model.addAttribute("one", one);
+		}
 
 		// 学歴のプルダウンをDBから取ってくる
 		List<Dropdown> dropdownInfo = starrilyService.getDropdownInfo(6);
@@ -259,12 +279,148 @@ public class SkillsheetReferenceController {
 	 * @return　スキルシート参照に返す。
 	 */
 	@DeleteMapping("/skillsheet_reference")
-	public String skillsheetDelete(Model model, @ModelAttribute SkillSheet Skillsheet,
+	public String skillsheetDelete(HttpSession session, Model model, @ModelAttribute SkillSheet Skillsheet,
 			RedirectAttributes redirectAttribute) {
 
 		starrilyService.deleteSkillSheetProject(Skillsheet);
 
+		int userId = Skillsheet.getUserId();
+		session.setAttribute("userId", userId);
+
 		return "redirect:skillsheet_reference";
+	}
+
+	/**
+	 *　ヘッダーのスキルシート参照画面から来たとの処理
+	 *
+	 * @param model Modelクラス
+	 * @return スキルシート 参照画面に返す。
+	 */
+	@PostMapping("/skillsheet_reference_add")
+	public String skillRefce(Model model) {
+
+		//仮
+		int LoginUserId = 3;
+
+		// 検索一覧画面からパラメータで受け取るようにする。
+		// userIdをLoginControllerからセッションで受け取る
+		//	int LoginUserId = (int) session.getAttribute("userId");
+		// int role = (int) session.getAttribute("role");
+		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(LoginUserId);
+		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
+
+		// もし基本情報がなかった場合
+		if (LoginUserId != skillSheetBasicList.getUserId()) {
+			return "skillsheet_information_registration";
+		}
+
+		// 案件基本情報を取得
+		List<SkillSheet> projectAllList = starrilyService.getProjectAll(LoginUserId);
+
+		for (SkillSheet forProjectAll : projectAllList) {
+			// DBの情報を取得
+			// userIdで同じ数字があった場合、CareerIdの情報のDBを取ってくる
+			List<SkillSheet> projectDbList = starrilyService.getProjectDB(forProjectAll.getCareerId());
+
+			String projectDb = "";
+
+			for (SkillSheet forDb : projectDbList) {
+				String db = null;
+				if (forDb.getDbVer() != null) {
+					db = forDb.getDb() + forDb.getDbVer();
+				} else {
+					db = forDb.getDb();
+				}
+				projectDb = projectDb + db + "\n";
+			}
+			forProjectAll.setAllDb(projectDb);
+
+			// フレームワークの情報を取得
+			List<SkillSheet> projectFwNwList = starrilyService.getProjectFwNw(forProjectAll.getCareerId());
+
+			String projectFwNw = "";
+
+			for (SkillSheet ForFwNw : projectFwNwList) {
+
+				String FwNw = null;
+
+				if (ForFwNw.getFwNwVer() != null) {
+					FwNw = ForFwNw.getFwNw() + ForFwNw.getFwNwVer();
+				} else {
+					FwNw = ForFwNw.getFwNw();
+				}
+				projectFwNw = projectFwNw + FwNw + "\n";
+			}
+			forProjectAll.setAllFwNw(projectFwNw);
+
+			// OSの情報を取得
+			List<SkillSheet> projectOsList = starrilyService.getProjectOS(forProjectAll.getCareerId());
+
+			String projectOs = "";
+
+			for (SkillSheet ForOs : projectOsList) {
+
+				String Os = null;
+
+				if (ForOs.getOsVer() != null) {
+					Os = ForOs.getOs() + ForOs.getOsVer();
+				} else {
+					Os = ForOs.getOs();
+				}
+				projectOs = projectOs + Os + "\n";
+			}
+			forProjectAll.setAllOs(projectOs);
+
+			// 言語の情報を取得
+			List<SkillSheet> projectLangList = starrilyService.getProjectLang(forProjectAll.getCareerId());
+
+			String projectLang = "";
+
+			for (SkillSheet ForProjectLang : projectLangList) {
+
+				String language = null;
+
+				if (ForProjectLang.getOsVer() != null) {
+					language = ForProjectLang.getLanguage() + ForProjectLang.getLanguageVer();
+				} else {
+					language = ForProjectLang.getLanguage();
+				}
+				projectLang = projectLang + language + "\n";
+			}
+			forProjectAll.setAllLang(projectLang);
+
+			// その他の情報を取得
+			List<SkillSheet> projectOtherList = starrilyService.getProjectOther(forProjectAll.getCareerId());
+
+			String projectOther = "";
+
+			for (SkillSheet ForProjectOther : projectOtherList) {
+
+				String other = null;
+
+				if (ForProjectOther.getOsVer() != null) {
+					other = ForProjectOther.getOther() + ForProjectOther.getOtherVer();
+				} else {
+					other = ForProjectOther.getOther();
+				}
+				projectOther = projectOther + other + "\n";
+			}
+			forProjectAll.setAllOther(projectOther);
+		}
+
+		model.addAttribute("projectAllList", projectAllList);
+
+		// ヘッダースキルシート参照から来たときの判断
+		if (LoginUserId == skillSheetBasicList.getUserId()) {
+			int two = 2;
+			model.addAttribute("two", two);
+		}
+
+		// 学歴のプルダウンをDBから取ってくる
+		List<Dropdown> dropdownInfo = starrilyService.getDropdownInfo(6);
+		model.addAttribute("dropdownInfo", dropdownInfo);
+
+		return "skillsheet_reference";
 	}
 
 }

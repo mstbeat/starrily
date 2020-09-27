@@ -32,7 +32,7 @@
         SUB.User_appeal = #{userAppeal},
         SUB.User_certification = #{userCertification},
         SUB.User_remarks = #{userRemarks},
-        SUB.Update_date = #{updateDate}
+        SUB.Update_date = CURRENT_TIMESTAMP()
     WHERE
         UI.User_id= #{userId}
         AND UI.Delete_flg = '0'
@@ -55,23 +55,31 @@
         SUD.User_id As userId
         ,SDI.Db AS db
         ,SDI.Db_ver AS dbVer
-        ,SDI.Db_period AS dbPeriod
+        ,SUM(SDI.Db_period) AS dbPeriod
    FROM
         StarrilyUserDetailInfo SUD
    JOIN
         StarrilyDBInfo SDI
    ON
         SUD.Career_id = SDI.Career_id
-    WHERE
+   WHERE
         SUD.Delete_flg = '0'
-        <if test = "db != null"></if>
+        <if test = "db != null and !db.equals('')">
         AND SDI.Db = #{db}
-        <if test = "dbVer != null"></if>
-        AND SDI.Db_ver LIKE #{dbVer}'%'
-        <if test = "dbPeriod != null and !dbPeriod.equals('一年未満')"></if>
-        AND SDI.Db_period >= #{dbPeriod}
-        <if test = "dbPeriod != null and dbPeriod.equals('一年未満')"></if>
-        AND SDI.Db_period = #{dbPeriod}
+        </if>
+        <if test = "dbVer != null">
+        AND SDI.Db_ver LIKE CONCAT('%',#{dbVer},'%')
+        </if>
+   GROUP BY
+        userid
+        <if test = "dbPeriod != 11">
+   HAVING
+        dbPeriod >= #{dbPeriod}
+        </if>
+        <if test = "dbPeriod == 11">
+   HAVING
+        #{dbPeriod} >= dbPeriod
+        </if>
 </select>
 
 <!--FW/NW情報検索-->
@@ -80,7 +88,7 @@
         SUD.User_id As userId
         ,SFI.Fw_nw AS fwNw
         ,SFI.Fw_nw_ver AS fwNwVer
-        ,SFI.Fw_nw_period AS fwNwPeriod
+        ,SUM(SFI.Fw_nw_period) AS fwNwPeriod
    FROM
         StarrilyUserDetailInfo SUD
    JOIN
@@ -89,14 +97,22 @@
         SUD.Career_id = SFI.Career_id
    WHERE
         SUD.Delete_flg = '0'
-        <if test = "fwNw != null"></if>
+        <if test = "fwNw != null and !fwNw.equals('')">
         AND SFI.Fw_nw = #{fwNw}
-        <if test = "Fw_nw_ver != null"></if>
-        AND SFI.Fw_nw_ver LIKE #{fwNwVer}'%'
-        <if test = "fwNwPeriod != null and !fwNwPeriod.equals('一年未満')"></if>
-        AND SFI.Fw_nw_period >= #{fwNwPeriod}
-        <if test = "fwNwPeriod != null and fwNwPeriod.equals('一年未満')"></if>
-        AND SFI.Fw_nw_period = #{fwNwPeriod}
+        </if>
+        <if test = "fwNwVer != null">
+        AND SFI.Fw_nw_ver LIKE CONCAT('%',#{fwNwVer},'%')
+        </if>
+   GROUP BY
+        user_id
+        <if test = "fwNwPeriod != 11">
+   HAVING
+        fwNwPeriod >= #{fwNwPeriod}
+        </if>
+        <if test = "fwNwPeriod == 11">
+   HAVING
+        fwNwPeriod >= fwNwPeriod
+        </if>
 </select>
 
 <!--OS情報検索-->
@@ -105,7 +121,7 @@
         SUD.User_id As userId
         ,SOI.Os AS os
         ,SOI.Os_ver AS osVer
-        ,SOI.Os_period AS osPeriod
+        ,SUM(SOI.Os_period) AS osPeriod
    FROM
         StarrilyUserDetailInfo SUD
    JOIN
@@ -114,14 +130,22 @@
         SUD.Career_id = SOI.Career_id
    WHERE
         SUD.Delete_flg = '0'
-        <if test = "os != null"></if>
+        <if test = "os != null and os.equals('')">
         AND SOI.Os = #{os}
-        <if test = "osVer != null"></if>
-        AND SOI.Os_ver LIKE #{osVer}'%'
-        <if test = "osPeriod != null and !osPeriod.equals('一年未満')"></if>
-        AND SOI.Os_period >= #{osPeriod}
-        <if test = "osPeriod != null and osPeriod.equals('一年未満')"></if>
-        AND SOI.Os_period = #{osPeriod}
+        </if>
+        <if test = "osVer != null">
+        AND SOI.Os_ver LIKE CONCAT('%',#{osVer},'%')
+        </if>
+   GROUP BY
+        userid
+        <if test = "osPeriod != 11">
+   HAVING
+        osPeriod >= #{osPeriod}
+        </if>
+        <if test = "osPeriod == 11">
+   HAVING
+        #{osPeriod} >= osPeriod
+        </if>
 </select>
 
 <!--言語情報検索-->
@@ -130,7 +154,7 @@
         SUD.User_id As userId
         ,SLI.Language AS language
         ,SLI.Language_ver AS languageVer
-        ,SLI.Language_period AS languagePeriod
+        ,SUM(SLI.Language_period) AS languagePeriod
    FROM
         StarrilyUserDetailInfo SUD
    JOIN
@@ -139,14 +163,22 @@
         SUD.Career_id = SLI.Career_id
     WHERE
         SUD.Delete_flg = '0'
-        <if test = "language != null"></if>
+        <if test = "language != null and !language.equals('')">
         AND SLI.Language = #{language}
-        <if test = "languageVer != null"></if>
-        AND SLI.Language_ver LIKE #{languageVer}'%'
-        <if test = "languagePeriod != null and !languagePeriod.equals('一年未満')"></if>
-        AND SLI.Language_period >= #{languagePeriod}
-        <if test = "languagePeriod != null and languagePeriod.equals('一年未満')"></if>
-        AND SLI.Language_period = #{languagePeriod}
+        </if>
+        <if test = "languageVer != null">
+        AND SLI.Language_ver LIKE CONCAT('%',#{languageVer},'%')
+        </if>
+   GROUP BY
+        userid
+        <if test = "languagePeriod != 11">
+   HAVING
+        languagePeriod >= #{languagePeriod}
+        </if>
+        <if test = "languagePeriod == 11">
+   HAVING
+        #{languagePeriod} >= languagePeriod
+        </if>
 </select>
 
 <!--その他情報検索-->
@@ -155,23 +187,31 @@
         SUD.User_id AS userId
         ,SOI.Other AS other
         ,SOI.Other_ver AS otherVer
-        ,SOI.Other_period AS otherPeriod
+        ,SUM(SOI.Other_period) AS otherPeriod
    FROM
         StarrilyUserDetailInfo SUD
    JOIN
         StarrilyOtherInfo SOI
    ON
         SUD.Career_id = SOI.Career_id
-    WHERE
+   WHERE
         SUD.Delete_flg = '0'
-        <if test = "other != null"></if>
+        <if test = "other != null and !other.equals('')">
         AND SOI.Other = #{other}
-        <if test = "otherVer != null"></if>
-        AND SOI.Other_ver LIKE #{otherVer}
-        <if test = "otherPeriod != null and !otherPeriod.equals('一年未満')"></if>
-        AND SOI.Other_period >= #{otherPeriod}
-        <if test = "otherPeriod != null and otherPeriod.equals('一年未満')"></if>
-        AND SOI.Other_period = #{otherPeriod}
+        </if>
+        <if test = "otherVer != null">
+        AND SOI.Other_ver LIKE CONCAT('%',#{otherVer},'%')
+        </if>
+   GROUP BY
+        userid
+        <if test = "otherPeriod != 11">
+   HAVING
+        otherPeriod >= #{otherPeriod}
+        </if>
+        <if test = "otherPeriod == 11">
+   HAVING
+        #{otherPeriod} >= otherPeriod
+        </if>
 </select>
 
 <!--案件基本情報取得-->
@@ -185,13 +225,17 @@
         StarrilyUserDetailInfo
     WHERE
         Delete_flg = '0'
-        <if test = "industry != null"></if>
-        AND Industry LIKE '%'#{industry}'%'
-        <if test = "position != null"></if>
+        <if test = "industry != null and !industry.equals('')">
+        AND Industry LIKE CONCAT('%',#{industry},'%')
+        </if>
+        <if test = "position != null and !position.equals('')">
         AND Position = #{position}
-        <if test = "chargePhase != null"></if>
-        AND Charge_phase IN (#{chargePhase})
+        </if>
+        <if test = "chargePhase != null">
+        AND Charge_phase LIKE CONCAT('%',#{chargePhase},'%')
+        </if>
 </select>
+
 
 <!--基本情報取得-->
 <select id="getSkillSheetBasic" parameterType="Integer" resultType="starrily.bean.SkillSheet">
@@ -411,17 +455,17 @@
 <insert id="insertProject" parameterType="starrily.bean.SkillSheet" useGeneratedKeys="true" keyProperty="careerId" keyColumn="career_id">
     INSERT INTO StarrilyUserDetailInfo(
         User_id,
-        start_date,
-        finish_date,
-        period_date,
-        business_name,
-        industry,
-        teams_number,
-        position,
-        charge_phase,
-        business_content,
-        registered_date,
-        update_date
+        Start_date,
+        Finish_date,
+        Period_date,
+        Business_name,
+        Industry,
+        Teams_number,
+        Position,
+        Charge_phase,
+        Business_content,
+        Registered_date,
+        Update_date
     )VALUES(
         #{userId},
         #{startDate},
@@ -650,4 +694,64 @@
         StarrilyOtherInfo SOI
    ORDER BY Other ASC
 </select>
+
+<!--メールアドレスに基づいてユーザーID取得-->
+<select id="getUserId" resultType="starrily.bean.UserInformation">
+  SELECT
+     SUI.user_id As userId
+   FROM
+     starrilyUserInfo SUI
+   WHERE
+     user_mail = #{userMail}
+</select>
+
+<!--ユーザーIDに基づいてユーザー情報取得-->
+<select id="getUserInformation" parameterType="int" resultType="starrily.bean.UserInformation">
+  SELECT
+     SUI.user_id As userId,
+     SUI.user_mail As userMail,
+     SUI.user_name As userName,
+     SUI.user_phonetic As userPhonetic,
+     SUI.update_date As updateDate
+   FROM
+     starrilyUserInfo SUI
+   WHERE
+     user_id = #{userId}
+     AND delete_flg = '0'
+</select>
+
+<select id="searchAllUser" resultType="starrily.bean.UserInformation">
+   SELECT
+        user_id AS userId
+        ,user_mail AS userMail
+        ,user_name AS userName
+   FROM
+        starrilyuserinfo
+   WHERE
+        delete_flg = 0
+</select>
+
+<select id="searchUserIndividual" resultType="starrily.bean.UserInformation" parameterType="int">
+   SELECT
+        user_id AS userId
+        ,user_mail AS userMail
+        ,user_name AS userName
+   FROM
+        starrilyuserinfo
+   WHERE
+        delete_flg = 0
+   AND
+        user_id = #{userId}
+</select>
+
+<!-- 権限更新 -->
+<update id="updateUserRole" parameterType="starrily.bean.UserInformation">
+	UPDATE
+		starrilyrole
+	SET
+		user_role = #{authority}
+	WHERE
+		user_id = #{userId}
+</update>
+
 </mapper>

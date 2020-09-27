@@ -16,7 +16,7 @@
 			<p class="errorMessage">エラーメッセージがここに入ります</p>
 		</div>
 
-	<form th:method="PUT" th:action="@{/skillsheet_information_update}" th:object="${skillSheetBasicList}">
+	<form th:method="POST" th:action="@{/skillsheet_information_up}" th:object="${skillSheetBasicList}">
 	  <div class="box">
 			<p class="RequiredMessage left">※は必須項目です</p>
 			<div class="tablepaddig">

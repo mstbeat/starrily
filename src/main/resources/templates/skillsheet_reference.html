@@ -10,17 +10,23 @@
 </head>
 	<header th:insert="/header"></header>
 </body>
-<main>
+<main >
 	<h1 class="pagetitle">スキルシート参照</h1>
 	<p class="errorMessage">エラーメッセージがここに入ります</p>
 	<div class="bottomspace">
 
-	<form th:method="POST" th:action="@{/engineer_list}">
-	  <div>
-		<input type="hidden" name="userId" id="userId">
+   <div th:if="${one == 1}">
+   <form  th:method="POST" th:action="@{/engineer_list}">
+	   <input type="hidden" name="userId" >
  		<input type="submit" value="戻る" class="backButton defolt right">
-	  </div>
- 	</form>
+	 </form>
+   </div>
+   <div th:if="${two == 2}" >
+   <form  th:method="POST" th:action="@{/engineer_search}">
+	   <input type="hidden" name="userId">
+ 		<input type="submit" value="戻る" class="backButton defolt right">
+	 </form>
+	 </div>
 
 	<form th:method="POST" th:action="@{/skillsheet_download}">
 	  <input type="submit" class="submitButton right defolt" value="ダウンロード">
@@ -31,7 +37,7 @@
 	 	<div class="box-title">基本情報</div>
 
 		<form th:method="POST" th:action="@{/skillsheet_information_update}">
-		  <input type="hidden" name="userId" th:value="*{userId}">
+		  <input type="hidden" name="userId" th:field="*{userId}">
 		  <input type="submit" class="add rightrelative defolt" value="基本情報更新">
 		</form>
 
@@ -136,7 +142,6 @@
 			<input class="add right defolt" type="submit" value="案件追加">
 	</form></div>
 
-
 	<div class="box" th:each="projectAllList ,elementStat: ${projectAllList}" th:object="${projectAllList}">
 
 		<form th:method="DELETE" th:action="@{/skillsheet_reference}">
@@ -147,7 +152,8 @@
 		</form>
 
 		<form th:method="POST" th:action="@{/skillsheet_project_update}">
-			<input class="submitButton right defolt" type="submit" value="案件更新"/>
+		 <input type="hidden" name="userId" th:value="*{userId}">
+		 <input class="submitButton right defolt" type="submit" value="案件更新"/>
 		</form>
 
 		<div class="box-title">案件No.<span th:text="${elementStat.count}"></span></div>

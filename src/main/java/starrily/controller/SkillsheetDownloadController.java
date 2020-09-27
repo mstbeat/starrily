@@ -69,7 +69,7 @@ public class SkillsheetDownloadController {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("Title", "職務・技術経歴書");
 
-		int userId = 3;
+		int userId = 1;
 
 		// 基本情報をとる
 		SkillSheet fields = starrilyService.getSkillSheetBasic(userId);
@@ -374,7 +374,7 @@ public class SkillsheetDownloadController {
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			params.put("Title", "職務・技術経歴書");
 
-			int userId = 3;
+			int userId = 1;
 
 			// 基本情報をとる
 			SkillSheet fields = starrilyService.getSkillSheetBasic(userId);

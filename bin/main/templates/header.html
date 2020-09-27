@@ -1,16 +1,29 @@
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/unity.css}">
+<link rel="stylesheet" th:href="@{/css/engineer.css}">
+<script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/skillsheet.js}" charset="UTF-8"></script>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
 	<div class="menu">
 	<div class="logospace">
-		<a th:href="@{http://localhost:8080/engineer_search}"><button class="logo"><span th:text="スキルシート管理システム"></span></button>
-		</a>
+
+	<form name="form_name" th:method="POST" th:action="@{engineer_search}">
+		<a href="javascript:form_name.submit()"><button class="logo"><span th:text="スキルシート管理システム"></span>
+		</button></a>
+    </form>
 	</div>
 	<div class="cp_navi">
 		<ul>
-			<li><div class="headerinput"><form th:action="@{engineer_search}" th:method="GET">
+			<li><div class="headerinput"><form th:action="@{engineer_search}" th:method="POST">
 				<input class="headerinputbuttom" type="submit" th:value="エンジニア検索">
 			</form></div></li>
 
-			<li><div><form th:action="@{skillsheet_reference}" th:method="post">
+			<li><div><form th:action="@{skillsheet_reference_add}" th:method="post">
 				<input class="headerinputbuttom" type="submit" th:value="スキルシート参照">
 			</form></div></li>
 
@@ -32,3 +45,4 @@
 		</ul>
 	</div>
 </div>
+</body>

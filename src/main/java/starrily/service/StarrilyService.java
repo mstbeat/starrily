@@ -38,7 +38,7 @@ public class StarrilyService {
 	*/
 	@Transactional
 	public int updateBasicInformation(SkillSheet skillSheet) {
-	 return starrilyMapper.updateBasicInformation(skillSheet);
+		return starrilyMapper.updateBasicInformation(skillSheet);
 	}
 
 	/**
@@ -58,7 +58,6 @@ public class StarrilyService {
 	public List<SkillSheet> searchProjectDB(SkillSheet skillSheet) {
 		return starrilyMapper.searchProjectDB(skillSheet);
 	}
-
 
 	/**
 	 * FW/NW情報検索.
@@ -271,8 +270,8 @@ public class StarrilyService {
 	 * ユーザー情報更新.
 	 * @param userInformation ユーザー情報beanクラス
 	 */
-	public void updateUserInformation(UserInformation userInformation) {
-		starrilyMapper.updateUserInformation(userInformation);
+	public int updateUserInformation(UserInformation userInformation) {
+		return starrilyMapper.updateUserInformation(userInformation);
 	}
 
 	/**
@@ -322,4 +321,48 @@ public class StarrilyService {
 	public List<SkillSheet> getPulldownProjectOther() {
 		return starrilyMapper.getPulldownProjectOther();
 	}
+
+	/**
+	 * ユーザー情報ユーザーID取得
+	 * @param userMail ログインユーザーメールアドレス
+	 * @return ユーザー情報beanクラス
+	 */
+	public UserInformation getUserId(String userMail) {
+		return starrilyMapper.getUserId(userMail);
+	}
+
+	/**
+	 * ユーザー情報取得
+	 * @param userId ユーザーID
+	 * @return ユーザー情報beanクラス
+	 */
+	public UserInformation getUserInformation(int userId) {
+		return starrilyMapper.getUserInformation(userId);
+	}
+
+
+	public UserInformation searchUserIndividual(int userId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return starrilyMapper.searchUserIndividual(userId);
+	}
+
+	/**
+	 * 全ユーザーを検索.
+	 * @return スキルシートbeanクラス
+	 */
+	public List<UserInformation> searchAllUser() {
+		return starrilyMapper.searchAllUser();
+	}
+
+	/**
+	 * 権限情報更新.
+	 * @param userInformation ユーザー情報
+	 * @return 更新件数
+	 */
+	public int updateUserRole(UserInformation userInformation) {
+		return starrilyMapper.updateUserRole(userInformation);
+	}
+
+
+
 }

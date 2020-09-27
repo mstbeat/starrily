@@ -12,34 +12,36 @@
 	<main>
 	<h1 class="pagetitle">ユーザー情報変更確認</h1>
 
-	<form th:action="@{/user_information_completion}" th:method="put">
+	<form th:action="@{/user_information_completion}" th:method="POST" th:object="${userInformation}">
+
+		<input type="hidden" th:field="*{userId}">
+		<input type="hidden" th:field="*{authority}">
+		<input type="hidden" th:field="*{updateDate}">
+
 		<div class="box boxsidespace">
 			<div class="box-title">ユーザー情報入力</div>
 			<div class="flex-container flex-center">
 				<div class="flex-2item">
 					<p class="inputtitle">メールアドレス</p>
-					<input class="userbox" type="text" disabled="disabled"
-						value="XX.XXXX@XXXXXX.jp" />
+					<input class="userbox" type="text" readonly th:field="*{userMail}" />
 				</div>
 				<div class="flex-2item">
 					<p class="inputtitle">権限</p>
-					<select class="userselect" disabled="disabled">
-						<option value=”0”>指定なし</option>
-						<option value=”1” selected>一般社員</option>
-						<option value=”2”>現場リーダー</option>
-						<option value=”3”>事業部リーダー</option>
-						<option value=”4”>管理者(管理営業,社長)</option>
+					<select class="userselect" disabled th:field="*{authority}">
+						<option value=0>指定なし</option>
+						<option value=1 selected>一般社員</option>
+						<option value=2>現場リーダー</option>
+						<option value=3>事業部リーダー</option>
+						<option value=4>管理者(管理営業,社長)</option>
 					</select>
 				</div>
 				<div class="flex-2item">
 					<p class="inputtitle">氏名</p>
-					<input class="userbox" type="text" disabled="disabled"
-						value="XX XXXXX" />
+					<input class="userbox" type="text" readonly th:field="*{userName}" />
 				</div>
 				<div class="flex-2item">
 					<p class="inputtitle">フリガナ</p>
-					<input class="userbox" type="text" disabled="disabled"
-						value="XX XXXXX" />
+					<input class="userbox" type="text" readonly th:field="*{userPhonetic}" />
 				</div>
 			</div>
 		</div>
@@ -55,4 +57,3 @@
 	</form>
 	</main>
 </body>
-</html>

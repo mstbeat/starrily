@@ -10,16 +10,16 @@ jQuery(function($) {
 	  alert('お使いのブラウザはStarrilyの閲覧推奨環境ではありません。\nウェブサイトが正しく表示されない、動作しない等の現象が起こる場合がありますので予めご了承ください。\nchromeまたはEdgeブラウザのご利用をおすすめいたします。');
 	}
 
-
   // 削除ボタンの確認メッセージ
    $('.delete').click(function(){
     return confirm('このユーザーを削除してよろしいですか？');
   });
 
-  // 削除ボタンの確認メッセージ
-   $('.deleteproject').click(function(){
-    return confirm('この案件を削除してよろしいですか？');
-  });
+});
+
+// 削除ボタンの確認メッセージ
+$('.deleteproject').click(function(){
+	return confirm('この案件を削除してよろしいですか？');
 });
 
     /* テキストエリアの初期設定. */
@@ -55,4 +55,7 @@ jQuery(function($) {
         $("#textareaHight").trigger('autoheight');
   });
 
-
+  // まだ機能が完成していないところでアラートを表示する
+  function stop() {
+	  alert("この機能はまだ実装されていません。");
+  }
