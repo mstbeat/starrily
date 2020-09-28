@@ -9,16 +9,15 @@
 <body>
 
  	<header th:insert="/header"></header>
-
-
 	<main>
 	<h1 class="pagetitle">ユーザー情報変更</h1>
 	<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
 	<form th:action="@{/user_information_confirmation}" th:method="post" th:object="${userInformation}">
 
+	<p class="errorMessage systemMessage" th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+
 		<input type="hidden" th:field="*{userId}">
 		<input type="hidden" th:field="*{updateDate}">
-
 		<div class="box boxsidespace">
 			<div class="box-title">ユーザー情報入力</div>
 			<div class="flex-container flex-center">

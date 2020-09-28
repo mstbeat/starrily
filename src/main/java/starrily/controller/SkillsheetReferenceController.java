@@ -7,8 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,124 +28,6 @@ public class SkillsheetReferenceController {
 	/** starrilyServiceクラスの中のメソッドを呼び出せるようにする. */
 	@Autowired
 	private StarrilyService starrilyService;
-
-	@Autowired
-	private HttpSession session;
-
-	/**
-	 *　スキルシート参照画面を表示(リダイレクトの処理)
-	 * @return　スキルシート参照に返す。
-	 */
-	@GetMapping("/skillsheet_reference")
-	public String skillRefer(Model model) {
-
-		int userId = (int) session.getAttribute("userId");
-
-		SkillSheet skillSheetBasicList = starrilyService.getSkillSheetBasic(userId);
-		model.addAttribute("skillSheetBasicList", skillSheetBasicList);
-
-		// 案件基本情報を取得
-		List<SkillSheet> projectAllList = starrilyService.getProjectAll(userId);
-
-		for (SkillSheet forProjectAll : projectAllList) {
-			// DBの情報を取得
-			// userIdで同じ数字があった場合、CareerIdの情報のDBを取ってくる
-			List<SkillSheet> projectDbList = starrilyService.getProjectDB(forProjectAll.getCareerId());
-
-			String projectDb = "";
-
-			for (SkillSheet forDb : projectDbList) {
-				String db = null;
-				if (forDb.getDbVer() != null) {
-					db = forDb.getDb() + forDb.getDbVer();
-				} else {
-					db = forDb.getDb();
-				}
-				projectDb = projectDb + db + "\n";
-			}
-			forProjectAll.setAllDb(projectDb);
-
-			// フレームワークの情報を取
-			List<SkillSheet> projectFwNwList = starrilyService.getProjectFwNw(forProjectAll.getCareerId());
-
-			String projectFwNw = "";
-
-			for (SkillSheet ForFwNw : projectFwNwList) {
-
-				String FwNw = null;
-
-				if (ForFwNw.getFwNwVer() != null) {
-					FwNw = ForFwNw.getFwNw() + ForFwNw.getFwNwVer();
-				} else {
-					FwNw = ForFwNw.getFwNw();
-				}
-				projectFwNw = projectFwNw + FwNw + "\n";
-			}
-			forProjectAll.setAllFwNw(projectFwNw);
-
-			// OSの情報を取得
-			List<SkillSheet> projectOsList = starrilyService.getProjectOS(forProjectAll.getCareerId());
-
-			String projectOs = "";
-
-			for (SkillSheet ForOs : projectOsList) {
-
-				String Os = null;
-
-				if (ForOs.getOsVer() != null) {
-					Os = ForOs.getOs() + ForOs.getOsVer();
-				} else {
-					Os = ForOs.getOs();
-				}
-				projectOs = projectOs + Os + "\n";
-			}
-			forProjectAll.setAllOs(projectOs);
-
-			// 言語の情報を取得
-			List<SkillSheet> projectLangList = starrilyService.getProjectLang(forProjectAll.getCareerId());
-
-			String projectLang = "";
-
-			for (SkillSheet ForProjectLang : projectLangList) {
-
-				String language = null;
-
-				if (ForProjectLang.getOsVer() != null) {
-					language = ForProjectLang.getLanguage() + ForProjectLang.getLanguageVer();
-				} else {
-					language = ForProjectLang.getLanguage();
-				}
-				projectLang = projectLang + language + "\n";
-			}
-			forProjectAll.setAllLang(projectLang);
-
-			// その他の情報を取得
-			List<SkillSheet> projectOtherList = starrilyService.getProjectOther(forProjectAll.getCareerId());
-
-			String projectOther = "";
-
-			for (SkillSheet ForProjectOther : projectOtherList) {
-
-				String other = null;
-
-				if (ForProjectOther.getOsVer() != null) {
-					other = ForProjectOther.getOther() + ForProjectOther.getOtherVer();
-				} else {
-					other = ForProjectOther.getOther();
-				}
-				projectOther = projectOther + other + "\n";
-			}
-			forProjectAll.setAllOther(projectOther);
-		}
-
-		model.addAttribute("projectAllList", projectAllList);
-
-		// 学歴のプルダウンをDBから取ってくる
-		List<Dropdown> dropdownInfo = starrilyService.getDropdownInfo(6);
-		model.addAttribute("dropdownInfo", dropdownInfo);
-
-		return "skillsheet_reference";
-	}
 
 	/**
 	 *　スキルシート参照画面を表示
@@ -278,7 +158,7 @@ public class SkillsheetReferenceController {
 	 * 案件削除を行う
 	 * @return　スキルシート参照に返す。
 	 */
-	@DeleteMapping("/skillsheet_reference")
+	@PostMapping("/skillsheet_referenceDelete")
 	public String skillsheetDelete(HttpSession session, Model model, @ModelAttribute SkillSheet Skillsheet,
 			RedirectAttributes redirectAttribute) {
 
@@ -287,7 +167,7 @@ public class SkillsheetReferenceController {
 		int userId = Skillsheet.getUserId();
 		session.setAttribute("userId", userId);
 
-		return "redirect:skillsheet_reference";
+		return "forward:skillsheet_reference";
 	}
 
 	/**

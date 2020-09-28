@@ -13,11 +13,9 @@
 	<h1 class="pagetitle">ユーザー情報変更確認</h1>
 
 	<form th:action="@{/user_information_completion}" th:method="POST" th:object="${userInformation}">
-
 		<input type="hidden" th:field="*{userId}">
 		<input type="hidden" th:field="*{authority}">
 		<input type="hidden" th:field="*{updateDate}">
-
 		<div class="box boxsidespace">
 			<div class="box-title">ユーザー情報入力</div>
 			<div class="flex-container flex-center">
@@ -57,3 +55,4 @@
 	</form>
 	</main>
 </body>
+</html>

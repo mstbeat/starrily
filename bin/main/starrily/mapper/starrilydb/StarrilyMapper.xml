@@ -633,7 +633,7 @@
         User_phonetic = #{userPhonetic},
         Update_date = CURRENT_TIMESTAMP()
     WHERE
-        User_id= #{userId}
+        User_id = #{userId}
         AND Delete_flg = '0'
         AND Update_date <![CDATA[ <= ]]> #{updateDate}
 </update>

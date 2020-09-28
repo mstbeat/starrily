@@ -271,7 +271,7 @@ public class StarrilyService {
 	 * @param userInformation ユーザー情報beanクラス
 	 */
 	public int updateUserInformation(UserInformation userInformation) {
-		return starrilyMapper.updateUserInformation(userInformation);
+		 return starrilyMapper.updateUserInformation(userInformation);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class StarrilyService {
 	 * @param userInformation ユーザー情報beanクラス
 	 */
 	public void deleteUserInformation(UserInformation userInformation) {
-		starrilyMapper.deleteUserInformation(userInformation);
+		 starrilyMapper.deleteUserInformation(userInformation);
 	}
 
 	/**

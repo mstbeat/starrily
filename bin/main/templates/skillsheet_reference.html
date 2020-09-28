@@ -144,7 +144,7 @@
 
 	<div class="box" th:each="projectAllList ,elementStat: ${projectAllList}" th:object="${projectAllList}">
 
-		<form th:method="DELETE" th:action="@{/skillsheet_reference}">
+		<form th:method="POST" th:action="@{/skillsheet_referenceDelete}">
 	      <input type="hidden" name="userId" th:value="*{userId}">
 	      <input type="hidden" name="careerId" th:value="*{careerId}">
 	      <input type="hidden" name="updateDate" th:value="*{updateDate}">

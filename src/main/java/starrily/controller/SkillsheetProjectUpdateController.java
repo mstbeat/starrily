@@ -75,7 +75,6 @@ public class SkillsheetProjectUpdateController {
 		if (!checkboxfaze.isEmpty() && !checkboxfaze.equals(null)) {
 			skillSheet.setChargePhase(checkboxfaze);
 		}
-
 		// 案件基本情報更新を実行する。
 		service.updateProject(skillSheet);
 		// 案件経歴情報削除を実行する。

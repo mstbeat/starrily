@@ -17,7 +17,6 @@ public class UserInformation implements Serializable {
 	/** ユーザーID */
 	private int userId;
 
-
 	/** パスワード */
 	private String password;
 

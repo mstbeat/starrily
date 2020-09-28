@@ -21,7 +21,7 @@ import starrily.service.StarrilyService;
 
 /**
 *
-* ユーザー情報変更完了画面のコントローラーです。
+* ユーザー情報変更確認画面のコントローラーです。
 *
 * @author s.kikuchi
 *
@@ -54,7 +54,6 @@ public class UserInformationCompletionController {
 	/**
 	 * ユーザー情報変更確認画面にて確定ボタンが押下された際に更新処理をするメソッドです。
 	 * @param user UserInformationクラス、formからの情報を代入
-	 *
 	 * @param model モデル属性のホルダーを定義
 	 * @return ユーザー情報登録・変更完了画面を返します。
 	 */
@@ -74,8 +73,11 @@ public class UserInformationCompletionController {
 			MessageSourceResolvable PADCH001 = new DefaultMessageSourceResolvable("PADCH001");
 			model.addAttribute("errMessage",
 					messageSource.getMessage("EMSG203", new MessageSourceResolvable[] { PADCH001 }, Locale.JAPAN));
+
 			session.getAttribute("searchConditions");
+
 			UserInformation sessionUserInfo = (UserInformation) session.getAttribute("searchConditions");
+
 			model.addAttribute("userInfo", new UserInformation());
 			// 権限のプルダウン情報をユーザー管理画面に渡す
 			model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
@@ -122,6 +124,7 @@ public class UserInformationCompletionController {
 
 			return "/user_management_seach";
 		}
+
 
 		model.addAttribute("message",
 				messageSource.getMessage("IMSG205", null, Locale.JAPAN));

@@ -14,7 +14,7 @@ import starrily.service.StarrilyService;
 
 /**
  *
- * ユーザー情報変更確認画面のコントローラーです。
+ * ユーザー情報変更画面のコントローラーです。
  *
  * @author s.kikuchi
  *
