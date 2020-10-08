@@ -22,6 +22,7 @@ public class LoginUserService {
 	@Autowired
 	LoginUserMapper loginUserMapper;
 
+
 	/**
 	 * 全てのユーザー情報取得.
 	 * @return 全てのユーザー情報

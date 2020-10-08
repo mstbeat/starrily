@@ -33,12 +33,12 @@ public class StarrilyService {
 
 	/**
 	* 基本情報更新.
-	* @param skillSheet スキルシートbeanクラス
+	* @param skillsheet スキルシートbeanクラス
 	* @return スキルシートbeanクラス
 	*/
 	@Transactional
-	public int updateBasicInformation(SkillSheet skillSheet) {
-		return starrilyMapper.updateBasicInformation(skillSheet);
+	public int updateBasicInformation(SkillSheet skillsheet) {
+		return starrilyMapper.updateBasicInformation(skillsheet);
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class StarrilyService {
 	 * @param userInformation ユーザー情報beanクラス
 	 */
 	public int updateUserInformation(UserInformation userInformation) {
-		 return starrilyMapper.updateUserInformation(userInformation);
+		return starrilyMapper.updateUserInformation(userInformation);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class StarrilyService {
 	 * @param userInformation ユーザー情報beanクラス
 	 */
 	public void deleteUserInformation(UserInformation userInformation) {
-		 starrilyMapper.deleteUserInformation(userInformation);
+		starrilyMapper.deleteUserInformation(userInformation);
 	}
 
 	/**
@@ -340,7 +340,6 @@ public class StarrilyService {
 		return starrilyMapper.getUserInformation(userId);
 	}
 
-
 	public UserInformation searchUserIndividual(int userId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return starrilyMapper.searchUserIndividual(userId);
@@ -362,7 +361,5 @@ public class StarrilyService {
 	public int updateUserRole(UserInformation userInformation) {
 		return starrilyMapper.updateUserRole(userInformation);
 	}
-
-
 
 }

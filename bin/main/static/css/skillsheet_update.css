@@ -151,3 +151,8 @@ p{
 	color: #fff;
 	background-color: #696a72;
   }
+
+  /* 基本情報更新エラーメッセージのリスト */
+.errorMessage li {
+  list-style: none;
+}

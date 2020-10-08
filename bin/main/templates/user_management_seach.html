@@ -21,7 +21,10 @@
 	<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
 	<p class="systemMessage" th:text="${message}"></p>
 	<div class="bottomspace">
-		<input type="button" onclick="history.back()" class="backButton right defolt" value="戻る">
+		<form th:method="post" th:action="@{engineer_search}">
+			<input type="submit" class="backButton right defolt" value="戻る">
+			<input type="hidden" th:value="${userID}" name="userId">
+		</form>
 		<form th:action="@{/user_registration}" th:method="post">
 			<input type="submit" class="submitButton right defolt" value="新規登録"></input>
 		</form>

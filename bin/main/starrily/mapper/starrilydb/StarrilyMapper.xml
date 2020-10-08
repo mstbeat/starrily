@@ -238,7 +238,7 @@
 
 
 <!--基本情報取得-->
-<select id="getSkillSheetBasic" parameterType="Integer" resultType="starrily.bean.SkillSheet">
+<select id="getSkillSheetBasic" parameterType="int" resultType="starrily.bean.SkillSheet">
     SELECT
     	SUB.user_id AS userId
         ,UI.User_name AS userName
@@ -315,7 +315,7 @@
         UI.User_id = SUD.User_id
     WHERE
         UI.User_id = #{userId}
-        AND SUD.Career_id = #{career_id}
+        AND SUD.Career_id = #{careerId}
         AND UI.Delete_flg = '0'
         AND SUD.Delete_flg = '0'
 </select>
@@ -720,6 +720,7 @@
      AND delete_flg = '0'
 </select>
 
+ <!-- ユーザー情報一覧取得 -->
 <select id="searchAllUser" resultType="starrily.bean.UserInformation">
    SELECT
         user_id AS userId
@@ -731,6 +732,7 @@
         delete_flg = 0
 </select>
 
+<!-- ユーザー情報取得 -->
 <select id="searchUserIndividual" resultType="starrily.bean.UserInformation" parameterType="int">
    SELECT
         user_id AS userId

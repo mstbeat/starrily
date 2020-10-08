@@ -6,7 +6,7 @@
 <script type="text/javascript" th:src="@{/js/skillsheet.js}" charset="UTF-8"></script>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ヘッダー</title>
 </head>
 <body>
 	<div class="menu">
@@ -23,8 +23,9 @@
 				<input class="headerinputbuttom" type="submit" th:value="エンジニア検索">
 			</form></div></li>
 
-			<li><div><form th:action="@{skillsheet_reference_add}" th:method="post">
-				<input class="headerinputbuttom" type="submit" th:value="スキルシート参照">
+			<li><div><form th:action="@{skillsheet_reference}" th:method="post">
+			   <input type="hidden" name="flg" value="2">
+			   <input class="headerinputbuttom" type="submit" th:value="スキルシート参照">
 			</form></div></li>
 
 			<li class="headerother"><b class="span_color">その他</b><br><img class="sortimage"th:src="@{img/sort_d.png}">

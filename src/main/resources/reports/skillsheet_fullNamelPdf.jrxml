@@ -32,6 +32,7 @@
 	<field name="position" class="java.lang.String"/>
 	<field name="businessContent" class="java.lang.String"/>
 	<field name="chargePhase" class="java.lang.String"/>
+	<field name="userInitialName" class="java.lang.String"/>
 	<title>
 		<band height="170" splitType="Stretch">
 			<staticText>
@@ -259,7 +260,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{userName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[ $F{userName} == null ? $F{userInitialName} : $F{userName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="240" y="38" width="70" height="20" uuid="3df2ec53-0876-4808-989c-c9cc303f9610"/>

@@ -9,10 +9,12 @@
 <body>
 
  	<header th:insert="/header"></header>
+
+
 	<main>
 	<h1 class="pagetitle">ユーザー情報変更</h1>
 	<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
-	<form th:action="@{/user_information_confirmation}" th:method="post" th:object="${userInformation}">
+	<form th:action="@{/user_information_confirmation}" th:method="post" th:object="${userInformation}" id="userUpdateFormId">
 
 	<p class="errorMessage systemMessage" th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
 
@@ -37,24 +39,25 @@
 				</div>
 				<div class="flex-2item">
 					<p class="inputtitle">氏名</p>
-					<input class="userbox" type="text" th:field="*{userName}" />
+					<input class="userbox" type="text" th:field="*{userName}"/>
 				</div>
 				<div class="flex-2item">
 					<p class="inputtitle">フリガナ</p>
-					<input class="userbox" type="text" th:field="*{userPhonetic}"  />
+					<input class="userbox" type="text" th:field="*{userPhonetic}"/>
 				</div>
 			</div>
 		</div>
-
+		</form>
 		<div class="centerbox">
 			<div class="lineup">
-				<input type="submit" class="submitButton defolt bottomwidth width" value="確認"></input>
+				<input type="submit" class="submitButton defolt bottomwidth width" value="確認" form="userUpdateFormId"></input>
 			</div>
 			<div class="lineup">
-				<input type="button" onclick="history.back()" class="backButton defolt bottomwidth width" value="戻る">
+				<form th:action="@{user_management}" th:method="post">
+					<input type="submit" class="backButton defolt bottomwidth width" th:value="戻る">
+				</form>
 			</div>
 		</div>
-	</form>
 
 	</main>
 </body>

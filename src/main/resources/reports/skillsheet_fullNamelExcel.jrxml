@@ -10,7 +10,6 @@
 	<field name="userSex" class="java.lang.String"/>
 	<field name="userBirthday" class="java.util.Date"/>
 	<field name="userAge" class="java.lang.Integer"/>
-	<field name="userFinalEducation" class="java.lang.String"/>
 	<field name="userName" class="java.lang.String"/>
 	<field name="userAddress" class="java.lang.String"/>
 	<field name="userStation" class="java.lang.String"/>
@@ -32,6 +31,8 @@
 	<field name="position" class="java.lang.String"/>
 	<field name="businessContent" class="java.lang.String"/>
 	<field name="chargePhase" class="java.lang.String"/>
+	<field name="userInitialName" class="java.lang.String"/>
+	<field name="userFinalEducation" class="java.lang.String"/>
 	<title>
 		<band height="172" splitType="Stretch">
 			<staticText>
@@ -247,7 +248,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{userName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{userName} == null ? $F{userInitialName} : $F{userName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="240" y="40" width="70" height="20" uuid="40d96ee9-3224-4a22-b7ff-6cf1065b1637"/>
@@ -597,7 +598,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allDb}]]></textFieldExpression>
@@ -610,7 +611,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allFwNw}]]></textFieldExpression>
@@ -623,7 +624,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allLang}]]></textFieldExpression>
@@ -636,7 +637,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allOther}]]></textFieldExpression>
@@ -649,7 +650,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="ipaexg" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allOs}]]></textFieldExpression>

@@ -7,16 +7,20 @@ import starrily.annotation.CharacterType;
 
 public class CharacterTypeValidation implements ConstraintValidator<CharacterType, String[]> {
 
+	/**
+	 * 最初に呼ばれるメソッド.
+	 */
 	@Override
 	public void initialize(CharacterType characterType) {
-
 	}
-
+	/**
+	 * 全角、半角カナチェック
+	 */
 	@Override
 	public boolean isValid(String[] input, ConstraintValidatorContext cxt) {
 
-		for (String s : input) {
-			if (!(s.matches("^[\\p{Alnum}|\\p{Punct}]*$"))) {
+		for (String check : input) {
+			if (!(check.matches("^[\\p{Alnum}|\\p{Punct}]*$"))) {
 				return false;
 			}
 		}

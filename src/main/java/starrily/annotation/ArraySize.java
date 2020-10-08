@@ -24,13 +24,13 @@ public @interface ArraySize {
 	 * 埋め込み文字{1}、桁数{1}を入力するメソッド.
 	 * @return 埋め込み文字、桁数
 	 */
-	String PADCH();
+	String PADCH() default "";
 
 	/**
 	 * 最大サイズの数字を取得メソッド.
 	 * @return 最大サイズ
 	 */
-	int size();
+	int size() default 20;
 
 	/**
 	 * バリデーションのメッセージメソッド.

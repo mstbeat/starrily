@@ -12,7 +12,7 @@
 	<main>
 	<h1 class="pagetitle">ユーザー情報変更確認</h1>
 
-	<form th:action="@{/user_information_completion}" th:method="POST" th:object="${userInformation}">
+	<form th:action="@{/user_information_completion}" th:method="POST" th:object="${userInformation}" id="userUpdateConfirmFormId">
 		<input type="hidden" th:field="*{userId}">
 		<input type="hidden" th:field="*{authority}">
 		<input type="hidden" th:field="*{updateDate}">
@@ -43,16 +43,20 @@
 				</div>
 			</div>
 		</div>
+	</form>
 
 		<div class="centerbox">
 			<div class="lineup">
-				<input type="submit" class="submitButton defolt bottomwidth width" value="確定"></input>
+				<input type="submit" class="submitButton defolt bottomwidth width" value="確定" form="userUpdateConfirmFormId"></input>
 			</div>
 			<div class="lineup">
-				<input type="button" onclick="history.back()" class="backButton defolt bottomwidth width" value="変更">
+				<form th:action="@{/user_information}" th:method="post">
+					<input type="hidden" th:field="${userInformation.userId}">
+					<input type="submit" class="backButton defolt bottomwidth width" value="変更">
+				</form>
 			</div>
 		</div>
-	</form>
+
 	</main>
 </body>
 </html>

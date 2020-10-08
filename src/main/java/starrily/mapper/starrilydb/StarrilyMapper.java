@@ -27,10 +27,10 @@ public interface StarrilyMapper {
 
 	/**
 	* 基本情報更新.
-	* @param skillSheet スキルシートbeanクラス
+	* @param skillsheet スキルシートbeanクラス
 	* @return スキルシートbeanクラス
 	*/
-	public int updateBasicInformation(SkillSheet skillSheet);
+	public int updateBasicInformation(SkillSheet skillsheet);
 
 	/**
 	* 権限取得.

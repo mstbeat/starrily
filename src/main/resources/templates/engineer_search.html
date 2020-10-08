@@ -11,12 +11,15 @@
 <body>
   <header th:insert="/header"></header>
   <main>
+    <form th:action="@{engineer_search}" th:method="POST" name="submitclear"></form>
     <form class="starBody" th:action="@{engineer_search_execution}" th:method="post" th:object="${userInformation}" name="myform">
       <h1 class="pagetitle" th:text="エンジニア検索"></h1>
-      <p class="errorMessage" th:text="エラーメッセージがここに入ります"></p>
-      <input type="submit" class="submitButton right defolt">
-      <!-- <input type="submit" value="検索" class="searchButton"> -->
-      <button type="button" id="clear" class="clearButton right defolt">クリア</button>
+
+      <p class="errorMessage" th:each="errorMessage : ${errorMessage}" th:text="${errorMessage}"></p>
+
+      <input type="submit" class="submitButton right defolt" value="検索">
+
+      <button type="button" class="clearButton right defolt" onclick="javasclipt:submitclear.submit()">クリア</button>
       <div class="box">
         <div class="box-title">基本情報検索</div>
         <div class="flex-container">
@@ -24,7 +27,7 @@
             <p class="bottom0">
               <span>氏名&emsp;&emsp;</span>
               <span>
-                <input class="skillSearchbox inputwidth" type="text" th:field="*{userName}">
+                <input class="skillSearchbox inputwidth" type="text" th:field="*{userName}" pattern="[\u3041-\u3096]*" maxlength="20">
               </span>
             </p>
             <p class="top0 attention">※ひらがな部分一致検索</p>
@@ -48,10 +51,7 @@
               事業部&emsp;
               <span>
                 <select class="selectwidth skillSearchbox" th:field="*{division}">
-                  <option value="">指定なし</option>
-                  <option value="開発事業部">開発事業部</option>
-                  <option value="NW/インフラ事業部">NW/インフラ事業部</option>
-                  <option value="検証事業部">検証事業部</option>
+                  <option th:each="division : ${division}" th:value="${division.itemName}" th:inline="text">[[${division.itemName}]]</option>
                 </select>
               </span>
             </p>
@@ -60,7 +60,7 @@
             <p class="bottom0">
               担当営業&emsp;
               <span>
-                <input class="skillSearchbox inputwidth" type="text" th:field="*{salesRepresentative}">
+                <input class="skillSearchbox inputwidth" type="text" th:field="*{salesRepresentative}" pattern="[\u3041-\u3096]*" maxlength="20">
               </span>
             </p>
             <p class="top0 attention">※ひらがな部分一致検索</p>
@@ -70,16 +70,13 @@
               稼働状況
               <span>
                 <select class="selectwidth skillSearchbox" th:field="*{operationStatus}">
-                  <option value="">指定なし</option>
-                  <option value="提案可能">提案可能</option>
-                  <option value="提案不可">提案不可</option>
+                  <option th:each="status : ${status}" th:value="${status.itemName}" th:inline="text">[[${status.itemName}]]</option>
                 </select>
               </span>
             </p>
           </div>
         </div>
       </div>
-
       <div class="detailSearchBody box">
         <div class="box-title">スキル情報検索</div>
         <div id="mask" class="hidden"></div>
@@ -88,16 +85,11 @@
         <div class="top0 bottom0 attention attention2">※前後部分一致検索</div>
         <div>
           <div class="leftmargin top0 pulldownset">
-            <select class="widthbox bottommargin parent1" name="item">
-              <option value="" class="msg1" selected>項目を選択してください</option>
-              <option value="OS">OS</option>
-              <option value="FWNW">FW/NW</option>
-              <option value="DB">DB</option>
-              <option value="Language">言語</option>
-              <option value="Other">その他</option>
+            <select class="widthbox bottommargin parent1" name="item1">
+              <option th:each="item : ${item}" th:value="${item.itemCode}" th:inline="text">[[${item.itemName}]]</option>
             </select>
-            <input type="hidden" name="detail" value="">
-            <select class="widthbox children1" name="detail" disabled required id="box">
+            <input type="hidden" name="detail1" value="">
+            <select class="widthbox children1" name="detail1" disabled required id="box">
               <option value="" class="msg1" selected>項目の内容を選択してください</option>
               <option th:each="DB : ${DB}" th:value="${DB.db}" th:inline="text" th:data-val="DB">[[${DB.db}]]</option>
               <option th:each="OS : ${OS}" th:value="${OS.os}" th:inline="text" th:data-val="OS">[[${OS.os}]]</option>
@@ -105,27 +97,16 @@
               <option th:each="FwNw : ${FwNw}" th:value="${FwNw.fwNw}" th:inline="text" th:data-val="FWNW">[[${FwNw.fwNw}]]</option>
               <option th:each="Other : ${Other}" th:value="${Other.other}" th:inline="text" th:data-val="Other">[[${Other.other}]]</option>
             </select>
-
-            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver">
-
+            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver" th:value="${verSingle1}" maxlength="20" pattern="^[a-zA-Z0-9!-/:-@¥[-`{-~]*$">
             <select class="widthbox" name="years">
-              <option value="0">経験年数を選択してください</option>
-              <option value="11">1年未満</option>
-              <option value="12">1年以上</option>
-              <option value="36">3年以上</option>
-              <option value="60">5年以上</option>
-              <option value="120">10年以上</option>
+              <option th:each="years : ${years}" th:value="${years.itemName}" th:inline="text">[[${years.itemName}]]</option>
             </select>
             <br>
-            <select class="widthbox bottommargin parent2" name="item">
-              <option value="" class="msg2" selected>項目を選択してください</option>
-              <option value="OS">OS</option>
-              <option value="FWNW">FW/NW</option>
-              <option value="DB">DB</option>
-              <option value="Language">言語</option>
-              <option value="Other">その他</option>
+            <select class="widthbox bottommargin parent2" name="item2">
+              <option th:each="item : ${item}" th:value="${item.itemCode}" th:inline="text">[[${item.itemName}]]</option>
             </select>
-            <select class="widthbox children2" name="detail" disabled required id="box">
+            <input type="hidden" name="detail2" value="">
+            <select class="widthbox children2" name="detail2" disabled required id="box">
               <option value="" class="msg2" selected>項目の内容を選択してください</option>
               <option th:each="DB : ${DB}" th:value="${DB.db}" th:inline="text" th:data-val="DB">[[${DB.db}]]</option>
               <option th:each="OS : ${OS}" th:value="${OS.os}" th:inline="text" th:data-val="OS">[[${OS.os}]]</option>
@@ -133,24 +114,15 @@
               <option th:each="FwNw : ${FwNw}" th:value="${FwNw.fwNw}" th:inline="text" th:data-val="FWNW">[[${FwNw.fwNw}]]</option>
               <option th:each="Other : ${Other}" th:value="${Other.other}" th:inline="text" th:data-val="Other">[[${Other.other}]]</option>
             </select>
-            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver">
+            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver" th:value="${verSingle2}" maxlength="20" pattern="^[a-zA-Z0-9!-/:-@¥[-`{-~]*$">
             <select class="widthbox" name="years">
-              <option value="0">経験年数を選択してください</option>
-              <option value="11">1年未満</option>
-              <option value="12">1年以上</option>
-              <option value="36">3年以上</option>
-              <option value="60">5年以上</option>
-              <option value="120">10年以上</option>
+              <option th:each="years : ${years}" th:value="${years.itemName}" th:inline="text">[[${years.itemName}]]</option>
             </select>
-            <select class="widthbox bottommargin parent3" name="item">
-              <option value="" class="msg3" selected>項目を選択してください</option>
-              <option value="OS">OS</option>
-              <option value="FWNW">FW/NW</option>
-              <option value="DB">DB</option>
-              <option value="Language">言語</option>
-              <option value="Other">その他</option>
+            <select class="widthbox bottommargin parent3" name="item3">
+              <option th:each="item : ${item}" th:value="${item.itemCode}" th:inline="text">[[${item.itemName}]]</option>
             </select>
-            <select class="widthbox children3" name="detail" disabled required id="box">
+            <input type="hidden" name="detail3" value="">
+            <select class="widthbox children3" name="detail3" disabled required id="box">
               <option value="" class="msg3" selected>項目の内容を選択してください</option>
               <option th:each="DB : ${DB}" th:value="${DB.db}" th:inline="text" th:data-val="DB">[[${DB.db}]]</option>
               <option th:each="OS : ${OS}" th:value="${OS.os}" th:inline="text" th:data-val="OS">[[${OS.os}]]</option>
@@ -158,24 +130,15 @@
               <option th:each="FwNw : ${FwNw}" th:value="${FwNw.fwNw}" th:inline="text" th:data-val="FWNW">[[${FwNw.fwNw}]]</option>
               <option th:each="Other : ${Other}" th:value="${Other.other}" th:inline="text" th:data-val="Other">[[${Other.other}]]</option>
             </select>
-            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver">
+            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver" th:value="${verSingle3}" maxlength="20" pattern="^[a-zA-Z0-9!-/:-@¥[-`{-~]*$">
             <select class="widthbox" name="years">
-              <option value="0">経験年数を選択してください</option>
-              <option value="11">1年未満</option>
-              <option value="12">1年以上</option>
-              <option value="36">3年以上</option>
-              <option value="60">5年以上</option>
-              <option value="120">10年以上</option>
+              <option th:each="years : ${years}" th:value="${years.itemName}" th:inline="text">[[${years.itemName}]]</option>
             </select>
-            <select class="widthbox bottommargin parent4" name="item">
-              <option value="" class="msg4" selected>項目を選択してください</option>
-              <option value="OS">OS</option>
-              <option value="FWNW">FW/NW</option>
-              <option value="DB">DB</option>
-              <option value="Language">言語</option>
-              <option value="Other">その他</option>
+            <select class="widthbox bottommargin parent4" name="item4">
+              <option th:each="item : ${item}" th:value="${item.itemCode}" th:inline="text">[[${item.itemName}]]</option>
             </select>
-            <select class="widthbox children4" name="detail" disabled required id="box">
+            <input type="hidden" name="detail4" value="">
+            <select class="widthbox children4" name="detail4" disabled required id="box">
               <option value="" class="msg4" selected>項目の内容を選択してください</option>
               <option th:each="DB : ${DB}" th:value="${DB.db}" th:inline="text" th:data-val="DB">[[${DB.db}]]</option>
               <option th:each="OS : ${OS}" th:value="${OS.os}" th:inline="text" th:data-val="OS">[[${OS.os}]]</option>
@@ -183,24 +146,15 @@
               <option th:each="FwNw : ${FwNw}" th:value="${FwNw.fwNw}" th:inline="text" th:data-val="FWNW">[[${FwNw.fwNw}]]</option>
               <option th:each="Other : ${Other}" th:value="${Other.other}" th:inline="text" th:data-val="Other">[[${Other.other}]]</option>
             </select>
-            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver">
+            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver" th:value="${verSingle4}" maxlength="20" pattern="^[a-zA-Z0-9!-/:-@¥[-`{-~]*$">
             <select class="widthbox" name="years">
-              <option value="0">経験年数を選択してください</option>
-              <option value="11">1年未満</option>
-              <option value="12">1年以上</option>
-              <option value="36">3年以上</option>
-              <option value="60">5年以上</option>
-              <option value="120">10年以上</option>
+              <option th:each="years : ${years}" th:value="${years.itemName}" th:inline="text">[[${years.itemName}]]</option>
             </select>
-            <select class="widthbox bottommargin parent5" name="item">
-              <option value="" class="msg5" selected>項目を選択してください</option>
-              <option value="OS">OS</option>
-              <option value="FWNW">FW/NW</option>
-              <option value="DB">DB</option>
-              <option value="Language">言語</option>
-              <option value="Other">その他</option>
+            <select class="widthbox bottommargin parent5" name="item5">
+              <option th:each="item : ${item}" th:value="${item.itemCode}" th:inline="text">[[${item.itemName}]]</option>
             </select>
-            <select class="widthbox children5" name="detail" disabled required id="box">
+            <input type="hidden" name="detail5" value="">
+            <select class="widthbox children5" name="detail5" disabled required id="box">
               <option value="" class="msg5" selected>項目の内容を選択してください</option>
               <option th:each="DB : ${DB}" th:value="${DB.db}" th:inline="text" th:data-val="DB">[[${DB.db}]]</option>
               <option th:each="OS : ${OS}" th:value="${OS.os}" th:inline="text" th:data-val="OS">[[${OS.os}]]</option>
@@ -208,14 +162,9 @@
               <option th:each="FwNw : ${FwNw}" th:value="${FwNw.fwNw}" th:inline="text" th:data-val="FWNW">[[${FwNw.fwNw}]]</option>
               <option th:each="Other : ${Other}" th:value="${Other.other}" th:inline="text" th:data-val="Other">[[${Other.other}]]</option>
             </select>
-            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver">
+            <input class="widthbox inputwidth" type="text" placeholder="バージョン" name="ver" th:value="${verSingle5}" maxlength="20" pattern="^[a-zA-Z0-9!-/:-@¥[-`{-~]*$">
             <select class="widthbox" name="years">
-              <option value="0">経験年数を選択してください</option>
-              <option value="11">1年未満</option>
-              <option value="12">1年以上</option>
-              <option value="36">3年以上</option>
-              <option value="60">5年以上</option>
-              <option value="120">10年以上</option>
+              <option th:each="years : ${years}" th:value="${years.itemName}" th:inline="text">[[${years.itemName}]]</option>
             </select>
           </div>
         </div>
@@ -226,7 +175,7 @@
               <p class="bottom0">
                 業界&emsp;&emsp;
                 <span>
-                  <input class="skillSearchbox inputwidth" type="text" name="industry">
+                  <input class="skillSearchbox inputwidth" type="text" name="industry" >
                 </span>
               </p>
               <p class="top0 bottom0 attention">※前後部分一致検索</p>
@@ -236,11 +185,7 @@
                 ポジション
                 <span>
                   <select class="selectwidth skillSearchbox" name="position">
-                    <option value="">指定なし</option>
-                    <option value="メンバー">メンバー</option>
-                    <option value="サブリーダー">サブリーダー</option>
-                    <option value="リーダー">リーダー</option>
-                    <option value="プロジェクトマネージャー">プロジェクトマネージャー</option>
+                    <option th:each="position : ${position}" th:value="${position.itemName}" th:inline="text">[[${position.itemName}]]</option>
                   </select>
                 </span>
               </p>

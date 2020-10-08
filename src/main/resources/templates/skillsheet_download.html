@@ -9,44 +9,49 @@
 <body>
 	<header th:insert="/header"></header>
 
-	<main>
+  <main>
 	<h1 class="pagetitle">スキルシートダウンロード</h1>
 
-	 <form th:method="GET" th:action="@{/skillsheet_reference}">
+	<form th:method="POST" th:action="@{/skillsheet_reference}">
 	 <p class="systemMessage">
-	 <input type="button" onclick="history.back()" value="戻る" class="backButton defolt bottomwidth right rightmargin width">
-	</p>
+       <input type="hidden" name="userId" th:value="*{userId}">
+        <input type="hidden" name="flg" value="0">
+	   <input type="submit" value="戻る" class="backButton defolt bottomwidth right rightmargin width">
+	 </p>
 	</form>
 
 	<p class="systemMessage subtitle">ダウンロードしたいものをクリックしてください。</p>
-	<p class="errorMessage">エラーメッセージがここに入ります</p>
 	<div class="container flexbox">
 
-		<div class="flexitem" >
+		<div class="flexitem">
 			<div class="box">
-			 <div class="box-title">氏名（フルネーム）</div>
-					<form class="boxheightsize center" th:method="POST" th:action="@{/fullname_pdf_download}">
-					  <input class="submitButton defolt bottomsize width pdf" type="submit" value="PDF" />
-					</form>
-					<form class="boxheightsize center" th:method="POST" th:action="@{/fullname_excel_download}">
-					  <input class="submitButton defolt bottomsize width" type="submit" value="Excel" />
-					</form>
-				</div>
+			 <div class="box-title">氏名（フルネーム)</div>
+			   <form class="boxheightsize center" th:method="POST" th:action="@{/fullname_pdf_download}">
+			     <input type="hidden" name="userId" th:value="*{userId}">
+			     <input type="hidden" name="flg" value="1">
+			     <input class="submitButton defolt bottomsize width pdf" type="submit" value="PDF"/>
+			   </form>
+			   <form class="boxheightsize center" th:method="POST" th:action="@{/fullname_excel_download}">
+			     <input type="hidden" name="userId" th:value="*{userId}">
+			     <input type="hidden" name="flg" value="1">
+		         <input class="submitButton defolt bottomsize width" type="submit" value="Excel"/>
+			   </form>
 			</div>
-
-
-		<div class="flexitem" >
-			<div class="box">
-			 <div class="box-title">氏名（イニシャル）</div>
-				<form class="boxheightsize center" th:method="POST" th:action="@{/initial_pdf_download}">
-				  <input class="submitButton defolt bottomsize width pdf" type="submit" value="PDF" />
+		</div>
+		<div class="flexitem">
+		   <div class="box">
+			 <div class="box-title">氏名（イニシャル)</div>
+			   <form class="boxheightsize center" th:method="POST" th:action="@{/fullname_pdf_download}">
+			     <input type="hidden" name="flg" value="2">
+			     <input class="submitButton defolt bottomsize width pdf" type="submit" value="PDF"/>
 				</form>
-				<form class="boxheightsize center" th:method="POST" th:action="@{/initial_excel_download}">
-				  <input class="submitButton defolt bottomsize width" type="submit" value="Excel" />
+				<form class="boxheightsize center" th:method="POST" th:action="@{/fullname_excel_download}">
+				   <input type="hidden" name="flg" value="2">
+				  <input class="submitButton defolt bottomsize width" type="submit" value="Excel"/>
 				</form>
 			</div>
 		</div>
-</div>
+    </div>
 
 </main>
 </body>

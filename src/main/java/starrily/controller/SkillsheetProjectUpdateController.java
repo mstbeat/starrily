@@ -1,18 +1,18 @@
 package starrily.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import starrily.bean.SkillSheet;
 import starrily.service.StarrilyService;
 
 /**
- * 新規案件追加クラス
+ * 新規案件追加クラス.
  *
  * @author s.lee
  * @version 1.0.0
@@ -25,27 +25,27 @@ public class SkillsheetProjectUpdateController {
 
 	/**
 	 * 案件更新画面を表示
-	 * @return　更新情報画面に返す。
+	 * @return 更新情報画面に返す。
 	 */
 	@PostMapping("/skillsheet_project_update")
-	public String skillsheetUpdate(Model model) {
+	public String skillsheetUpdate(Model model, SkillSheet skillSheet) {
 
-		SkillSheet skillSheet = new SkillSheet();
 		skillSheet.setUserId(3);
+		skillSheet.setCareerId(10);
+		model.addAttribute("skillSheet", service.getProject(skillSheet));
 
-		List<SkillSheet> projectList = service.getProject(skillSheet);
+		//担当フェーズの値を分けて保存
+		String[] chargePhase = service.getProject(skillSheet).get(0).getChargePhase().split("、");
+		//		 List<SkillSheet> chargePhase = service.getProject(skillSheet);
+		//担当フェースの情報を取得
+		model.addAttribute("chargePhase", chargePhase);
 
-		model.addAttribute("skillSheet", projectList);
+		model.addAttribute("userId", 1);
+		model.addAttribute("career_Id", 3);
 
-		// SkillSheetのインスタンスを渡す
-		// 仮権限情報取得（マージするときは消す）
+		// 仮権限情報取得
 		model.addAttribute("role", service.getUserRole(11));
-		// 権限取得 マージした時用
-		//	model.addAttribute("role", service.getUserRole(skillSheet.getUserId()));
-		// userIdを取得
-		// 案件追加画面に情報を送る マージした時用
-		// model.addAttribute("userID", skillSheet.getUserId());
-		// userIdを案件追加画面に送る（マージした時は消す）
+		// userIdを案件追加画面に送る
 		model.addAttribute("userID", skillSheet.getUserId());
 		// プルダウンDB取得
 		// 案件追加画面に取得情報を送る
@@ -65,32 +65,34 @@ public class SkillsheetProjectUpdateController {
 	}
 
 	/**
-	 * 案件変更をを実行
-	 * @return　スキルシート参照画面に返す。
+	 * 案件変更をを実行.
+	 *
+	 * @return スキルシート参照画面に返す。
 	 */
-	@PutMapping("/skillsheet_update_check")
-	public String skillsheetProjectUpdate(SkillSheet skillSheet, Model model, String checkboxfaze) {
+	@PostMapping("/skillsheet_project_update_put")
+	public String skillsheetProjectUpdate(@ModelAttribute @Validated SkillSheet skillSheet, BindingResult result,
+			Model model, String checkboxfaze,
+			String career_Id, String userId) {
 
 		//チェックボックスに確定した値を設定する。
-		if (!checkboxfaze.isEmpty() && !checkboxfaze.equals(null)) {
-			skillSheet.setChargePhase(checkboxfaze);
+		try {
+			if (!checkboxfaze.isEmpty() && !checkboxfaze.equals(null)) {
+				skillSheet.setChargePhase(checkboxfaze);
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
-		// 案件基本情報更新を実行する。
-		service.updateProject(skillSheet);
-		// 案件経歴情報削除を実行する。
-		service.deleteProjectItems(skillSheet);
-		// DB情報登録を実行する。
-		service.insertProjectDB(skillSheet);
-		// 	OS情報登録を実行する。
-		service.insertProjectOS(skillSheet);
-		// 言語情報登録を実行する。
-		service.insertProjectLang(skillSheet);
-		// FW_NW情報登録を実行する。
-		service.insertProjectFWNW(skillSheet);
-		// その他情報登録を実行する。
-		service.insertProjectOther(skillSheet);
+		skillSheet.setUserId(Integer.parseInt(userId));
+		skillSheet.setCareerId(Integer.parseInt(career_Id));
 
+		if (result.hasErrors()) {
+			return "skillsheet_project_update";
+		}
 		return "skillsheet_reference";
 	}
 
+	@PostMapping("/page_back")
+	public String pasgeBack() {
+		return "skillsheet_reference";
+	}
 }

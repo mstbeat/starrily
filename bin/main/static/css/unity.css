@@ -291,6 +291,15 @@ top:35px;
 	display: inline-block;
 	margin: 40px 100px 0 100px;
 }
+.regibtn {
+	margin: 40px 0 0 35%;
+}
+.backbtn {
+	position: relative;
+    left: 798px;
+    bottom: 43px;
+}
+
 .bottomwidth{
 	width: 3rem;
 }
@@ -507,9 +516,21 @@ top:35px;
 	padding:0;
 }
 
-
 /* スキルシートダウンロード画面 PDFボタンのcss*/
 .pdf {
 	padding:10px 45px;
+}
+
+.backLink {
+  color: #fff;
+  background-color: #5e7fca;
+  height: 20px;
+  width: 26px;
+  font-size: 13px;
+}
+
+ /* ユーザー管理画面エラーメッセージのリスト */
+.position li {
+  list-style: none;
 }
 

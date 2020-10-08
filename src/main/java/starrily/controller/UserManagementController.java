@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import starrily.bean.UserInformation;
 import starrily.service.LoginUserService;
 import starrily.service.StarrilyService;
+import starrily.validation.UserInformationGroup;
 
 /**
 * ユーザー管理画面のコントローラーです。.
@@ -56,12 +58,18 @@ public class UserManagementController {
 	MessageSource messageSource;
 
 	/**
+	 * セッションを使えるようになる.
+	 */
+	@Autowired
+	HttpSession session;
+
+	/**
 	 * ValidationMessagesから情報を取得.
 	 */
 	MessageSourceResolvable PADCH001 = new DefaultMessageSourceResolvable("PADCH001");
 
 	/**
-	 * その他からユーザー管理画面へ遷移処理をするメソッドです.
+	 * その他からユーザー管理画面へ遷移処理をするメソッドです。
 	 * @param model html側で利用するデータ類をまとめて管理する
 	 * @param userInformation UserInformationのbeanが使えるようになる
 	 * @return ユーザー管理画面を返します。
@@ -69,40 +77,45 @@ public class UserManagementController {
 	@PostMapping("/user_management")
 	public String userManagementPost(Model model, UserInformation userInformation) {
 		// ユーザー管理画面にUserInformationのインスタンスを渡す
-		model.addAttribute("userInfo", new UserInformation());
+		model.addAttribute("userInformation", new UserInformation());
 		// 権限のプルダウン情報をユーザー管理画面に渡す
 		model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
 		// 権限を取得
-		// 権限をユーザー画面に送る（仮後に消去）
-		model.addAttribute("role", 4);
 		// ユーザー画面に送る（マージしたときに使う）
 		// model.addAttribute("role", starrilyService.getUserRole(skillSheet.getUserId()));
 		// ユーザー管理画面
-		return "user_management";
+		return "/user_management";
 	}
 
 	/**
-	 * キーワード検索にて検索ボタンが押下された際にユーザー検索をするメソッドです.
+	 * キーワード検索にて検索ボタンが押下された際にユーザー検索をするメソッドです。.
 	 * @param model html側で利用するデータ類をまとめて管理する
 	 * @param userInformation UserInformationのbeanが使えるようになる
 	 * @return ユーザー管理画面を返します。
 	 */
 	@PutMapping("/user_management")
-	public String userManagementSerch(Model model, UserInformation userInformation) {
+	public String userManagementSerch(
+			@ModelAttribute @Validated(UserInformationGroup.class) UserInformation userInformation,
+			BindingResult result, Model model) {
+		// バリデーションチェック
+		if (result.hasErrors()) {
+			// 権限のプルダウン情報をユーザー管理画面に渡す
+			model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
+			// ユーザー管理画面
+			return "/user_management";
+		}
 		// ユーザー管理画面にUserInformationのインスタンスを渡す
 		model.addAttribute("userInfo", new UserInformation());
 		// 権限のプルダウン情報をユーザー管理画面に渡す
 		model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
 		// 権限を取得
-		// 権限をユーザー画面に送る（仮）
-		model.addAttribute("role", 4);
 		// ユーザー画面に送る（マージしたときに使う）
 		// model.addAttribute("role", starrilyService.getUserRole(skillSheet.getUserId()));
 		// 検索
 		// 氏名、権限の入力の有無をチェック
 		// どちらも未入力の処理
 		if (userInformation.getUserName().isEmpty() && userInformation.getAuthority().equals("指定なし")) {
-			// ユーザー情報取得
+			// ユーザー情報取得.
 			List<UserInformation> userInfo = userService.userInformationList();
 			// 表示件数表示メソッド呼び出し
 			numberDisplay(userInfo);
@@ -117,13 +130,12 @@ public class UserManagementController {
 				// カタカナ変換メソッド呼び出し
 				changePhonetic(userInformation);
 				// 氏名を入力した情報を保持する
-				request.setAttribute("retention", userInformation.getUserName());
+				//			    request.setAttribute("retention", userInformation.getUserName());
 			}
 			// 権限の入力があれば実行
 			if (!(userInformation.getAuthority().equals("指定なし"))) {
 				// 権限の文字を数字に変換メソッド呼び出し
 				changeInt(userInformation);
-
 				// 選択した権限を保持する
 				model.addAttribute("choice", userInformation.getAuthority());
 			}
@@ -133,6 +145,8 @@ public class UserManagementController {
 			changeString(userInfo);
 			// 取得した情報をユーザー管理画面に送る
 			model.addAttribute("userInformation", userInfo);
+			// 検索条件をセッションに保持
+			session.setAttribute("searchConditions", userInformation);
 			// 表示件数表示メソッド呼び出し
 			numberDisplay(userInfo);
 		}
@@ -187,12 +201,10 @@ public class UserManagementController {
 		// 権限のプルダウン情報をユーザー管理画面に渡す
 		model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
 		// 権限を取得
-		// 権限をユーザー画面に送る（仮）
-		model.addAttribute("role", 4);
 		// ユーザー画面に送る（マージしたときに使う）
 		// model.addAttribute("role", starrilyService.getUserRole(skillSheet.getUserId()));
 		// ユーザー管理画面
-		return "user_management_seach";
+		return "/user_management_seach";
 	}
 
 	/**
@@ -202,8 +214,7 @@ public class UserManagementController {
 	 * @return ユーザー管理画面を返します。
 	 */
 	@DeleteMapping("/user_management")
-	public String userManagementDelete(@Validated UserInformation userInformation, BindingResult result,
-			RedirectAttributes redirectAttributes) {
+	public String userManagementDelete(UserInformation userInformation, RedirectAttributes redirectAttributes) {
 		// ユーザー情報削除
 		starrilyService.deleteUserInformation(userInformation);
 		// リダイレクト先に氏名の検索フォームの入力値を渡す

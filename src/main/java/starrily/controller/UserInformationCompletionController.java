@@ -21,8 +21,7 @@ import starrily.service.StarrilyService;
 
 /**
 *
-* ユーザー情報変更確認画面のコントローラーです。
-*
+* ユーザー情報変更完了画面のコントローラーです。
 * @author s.kikuchi
 *
 */
@@ -68,68 +67,85 @@ public class UserInformationCompletionController {
 			model.addAttribute("showUserManagement", true);
 			break;
 		}
+		//変更処理確定ボタン押下後のデータベース情報
+		UserInformation dbInfo = starrilyService.getUserInformation(user.getUserId());
 
-		if (starrilyService.updateUserInformation(user) == 0 || starrilyService.updateUserRole(user) == 0) {
+		//変更処理確定ボタン押下後、すでに削除されている場合
+		if (dbInfo == null) {
 			MessageSourceResolvable PADCH001 = new DefaultMessageSourceResolvable("PADCH001");
 			model.addAttribute("errMessage",
-					messageSource.getMessage("EMSG203", new MessageSourceResolvable[] { PADCH001 }, Locale.JAPAN));
-
-			session.getAttribute("searchConditions");
-
-			UserInformation sessionUserInfo = (UserInformation) session.getAttribute("searchConditions");
-
-			model.addAttribute("userInfo", new UserInformation());
-			// 権限のプルダウン情報をユーザー管理画面に渡す
-			model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
-			// 権限を取得
-			// ユーザー画面に送る（マージしたときに使う）
-			// model.addAttribute("role", starrilyService.getUserRole(skillSheet.getUserId()));
-			// 検索
-			// 氏名、権限の入力の有無をチェック
-			// どちらも未入力の処理
-			if (sessionUserInfo.getUserName().isEmpty() && sessionUserInfo.getAuthority().equals("指定なし")) {
-				// ユーザー情報取得.
-				List<UserInformation> userInfo = userService.userInformationList();
-				// 表示件数表示メソッド呼び出し
-				numberDisplay(userInfo);
-				// 変換メソッド呼び出し
-				changeString(userInfo);
-				// 取得した情報をユーザー管理画面に送る
-				model.addAttribute("userInformation", userInfo);
-				// それ以外
-			} else {
-				// 氏名の入力があれば実行
-				if (!(sessionUserInfo.getUserName().isEmpty())) {
-					// カタカナ変換メソッド呼び出し
-					changePhonetic(sessionUserInfo);
-					// 氏名を入力した情報を保持する
-					request.setAttribute("retention", sessionUserInfo.getUserName());
-				}
-				// 権限の入力があれば実行
-				if (!(sessionUserInfo.getAuthority().equals("指定なし"))) {
-					// 権限の文字を数字に変換メソッド呼び出し
-					changeInt(sessionUserInfo);
-					// 選択した権限を保持する
-					model.addAttribute("choice", sessionUserInfo.getAuthority());
-				}
-				// 検索結果を取得
-				List<UserInformation> userInfo = userService.searchUserInfo(sessionUserInfo);
-				// 変換メソッド呼び出し
-
-				// 取得した情報をユーザー管理画面に送る
-				model.addAttribute("userInformation", userInfo);
-				// 表示件数表示メソッド呼び出し
-				numberDisplay(userInfo);
-			}
-
+					messageSource.getMessage("EMSG204", new MessageSourceResolvable[] { PADCH001 }, Locale.JAPAN));
+			searchProcess(model);
 			return "/user_management_seach";
 		}
 
+		//変更処理確定ボタン押下後、すでに更新されている場合
+		if (!user.getUpdateDate().equals(dbInfo.getUpdateDate())) {
+			MessageSourceResolvable PADCH001 = new DefaultMessageSourceResolvable("PADCH001");
+			model.addAttribute("errMessage",
+					messageSource.getMessage("EMSG203", new MessageSourceResolvable[] { PADCH001 }, Locale.JAPAN));
+			searchProcess(model);
+			return "/user_management_seach";
+		}
+
+		starrilyService.updateUserInformation(user);
+		starrilyService.updateUserRole(user);
 
 		model.addAttribute("message",
 				messageSource.getMessage("IMSG205", null, Locale.JAPAN));
-
 		return "/user_processing_complete";
+	}
+
+	/**
+	 * 検索を行うメソッド
+	 * @param model モデル属性のホルダーを定義
+	 */
+	void searchProcess(Model model) {
+		session.getAttribute("searchConditions");
+		UserInformation sessionUserInfo = (UserInformation) session.getAttribute("searchConditions");
+		model.addAttribute("userInfo", new UserInformation());
+		// 権限のプルダウン情報をユーザー管理画面に渡す
+		model.addAttribute("roleDropdown", starrilyService.getDropdownInfo(7));
+		// 権限を取得
+		// ユーザー画面に送る（マージしたときに使う）
+		// model.addAttribute("role", starrilyService.getUserRole(skillSheet.getUserId()));
+		// 検索
+		// 氏名、権限の入力の有無をチェック
+		// どちらも未入力の処理
+		if (sessionUserInfo.getUserName().isEmpty() && sessionUserInfo.getAuthority().equals("指定なし")) {
+			// ユーザー情報取得.
+			List<UserInformation> userInfo = userService.userInformationList();
+			// 表示件数表示メソッド呼び出し
+			numberDisplay(userInfo);
+			// 変換メソッド呼び出し
+			changeString(userInfo);
+			// 取得した情報をユーザー管理画面に送る
+			model.addAttribute("userInformation", userInfo);
+			// それ以外
+		} else {
+			// 氏名の入力があれば実行
+			if (!(sessionUserInfo.getUserName().isEmpty())) {
+				// カタカナ変換メソッド呼び出し
+				changePhonetic(sessionUserInfo);
+				// 氏名を入力した情報を保持する
+				request.setAttribute("retention", sessionUserInfo.getUserName());
+			}
+			// 権限の入力があれば実行
+			if (!(sessionUserInfo.getAuthority().equals("指定なし"))) {
+				// 権限の文字を数字に変換メソッド呼び出し
+				changeInt(sessionUserInfo);
+				// 選択した権限を保持する
+				model.addAttribute("choice", sessionUserInfo.getAuthority());
+			}
+			// 検索結果を取得
+			List<UserInformation> userInfo = userService.searchUserInfo(sessionUserInfo);
+			// 変換メソッド呼び出し
+
+			// 取得した情報をユーザー管理画面に送る
+			model.addAttribute("userInformation", userInfo);
+			// 表示件数表示メソッド呼び出し
+			numberDisplay(userInfo);
+		}
 	}
 
 	/**
@@ -185,6 +201,7 @@ public class UserInformationCompletionController {
 			userInformation.setAuthorityInt(5);
 		}
 	}
+
 	/**
 	 * ひらがなをカタカナに変換メソッド.
 	 * @param userInformation 氏名の入力フォームで入力された値

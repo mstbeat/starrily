@@ -18,9 +18,11 @@
 
 	<main>
 	<h1 class="pagetitle">ユーザー管理</h1>
-	<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
 	<div class="bottomspace">
-		<input type="button" onclick="history.back()" class="backButton right defolt" value="戻る">
+		<form th:method="post" th:action="@{engineer_search}">
+			<input type="submit" class="backButton right defolt" value="戻る">
+			<input type="hidden" th:value="${userID}" name="userId">
+		</form>
 		<form th:action="@{/user_registration}" th:method="post">
 			<input type="submit" class="submitButton right defolt" value="新規登録"></input>
 		</form>
@@ -28,14 +30,17 @@
 
 	<div class="box boxtopspace">
 		<div class="box-title">ユーザー検索</div>
-		<form th:action="@{user_management}" th:method="put" th:object="${userInfo}">
+		<form th:action="@{user_management}" th:method="put" th:object="${userInformation}">
+			<ul  class="position">
+				<li th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}" class="errorMessage"></li>
+			</ul>
 			<div class="boxheightsize">
 				<input type="submit" class="add right defolt" value="検索"></input>
 
 				<div class="flexbox">
 					<div class="flexitem">
 						<p class="inputtitle bottom0 top0">
-						  氏名<input type="text" class="serchbox bottom0" th:field="*{userName}" />
+							氏名<input type="text" class="serchbox bottom0" th:field="*{userName}" />
 						</p>
 						<p class="top0 attention">※ひらがな部分一致検索</p>
 					</div>

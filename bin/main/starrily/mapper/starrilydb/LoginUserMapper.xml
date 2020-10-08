@@ -35,7 +35,7 @@
   	INNER JOIN
   		starrilyrole
   	ON
-  		starrilyuserinfo.user_id = starrilyrole.user_id
+  	    bstarrilyuserinfo.user_id = starrilyrole.user_id
   	<where>
   		delete_flg = '0'
   		<if test="userName != null and authority != '指定なし'">

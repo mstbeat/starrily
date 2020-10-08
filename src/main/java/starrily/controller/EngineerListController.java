@@ -30,13 +30,12 @@ public class EngineerListController {
 	private StarrilyService starrilyService;
 
 	/**
-	 * 検索ボタンを押下するときに処理するメソッド
+	 * 検索ボタンを押下するときに処理するメソッド.
 	 *
 	 * @return  エンジニア一覧画面へ遷移する。
 	 */
 	@PostMapping("engineer_list")
 	public String engineerList(Model model, HttpSession session) {
-
 		// セッションに検索した条件の保持
 		EngineerSearch es = (EngineerSearch) session.getAttribute("engineer_search");
 		// UserInformationクラスをインスタンス化
@@ -109,12 +108,10 @@ public class EngineerListController {
 			if (item[i].equals("FWNW")) {
 				// fwnwの情報をセット
 				skillSheet.setFwNw(detail[i]);
-
 				// fwfwバージョンが記入されているかの判断
 				if (ver.length != 0 && ver[i] != null && !ver[i].equals("")) {
 					// fwnwのバージョンをセット
 					skillSheet.setFwNwVer(ver[i]);
-
 				}
 				// fwfwの経験連数をセット
 				skillSheet.setFwNwPeriod(years[i]);
@@ -124,36 +121,30 @@ public class EngineerListController {
 				skill.addAll(FwNw);
 				IdCount++;
 				continue;
-
 			}
 
 			if (item[i].equals("Language")) {
 				skillSheet.setLanguage(detail[i]);
-
 				if (ver.length != 0 && ver[i] != null && !ver[i].equals("")) {
 					skillSheet.setLanguageVer(ver[i]);
 				}
-
 				skillSheet.setLanguagePeriod(years[i]);
 				List<SkillSheet> Language = starrilyService.searchProjectLang(skillSheet);
 				skill.addAll(Language);
 				IdCount++;
 				continue;
-
 			}
 
 			if (item[i].equals("Other")) {
 				skillSheet.setOther(detail[i]);
 				if (ver.length != 0 && ver[i] != null && !ver[i].equals("")) {
 					skillSheet.setOtherVer(ver[i]);
-
 				}
 				skillSheet.setOtherPeriod(years[i]);
 				List<SkillSheet> Other = starrilyService.searchProjectOther(skillSheet);
 				skill.addAll(Other);
 				IdCount++;
 				continue;
-
 			}
 
 		}
@@ -177,20 +168,17 @@ public class EngineerListController {
 
 			//担当フェーズが0でなかったら
 			if (chargePhase.length == 0) {
-
 				//ユーザーID,業界、ポジション、担当フェーズを取得
 				List<SkillSheet> basicInfoList = starrilyService.searchProject(ss);
 				//mapを初期化
 				Map<Integer, Integer> user = new HashMap<>();
 
-				//
 				for (SkillSheet skillSheet : basicInfoList) {
 					Integer i = user.get(skillSheet.getUserId());
 					// ユーザーIDがnullでなかったら 1 : i+ 1か
 					user.put(skillSheet.getUserId(), i == null ? 1 : i + 1);
 				}
 
-				//
 				List<Integer> keyList = new ArrayList<>(user.keySet());
 
 				for (Integer number : keyList) {
@@ -202,18 +190,12 @@ public class EngineerListController {
 					if (!position.equals("") && position != null) {
 						sSheet.setPosition(position);
 					}
-
 					sSheet.setUserId(number);
-
 					skill.add(sSheet);
 				}
-
 				IdCount++;
-
 			} else {
-
 				for (String str : chargePhase) {
-
 					if (!str.equals("")) {
 
 						ss.setChargePhase(str);
@@ -226,7 +208,6 @@ public class EngineerListController {
 							Integer i = user.get(sSheet.getUserId());
 							user.put(sSheet.getUserId(), i == null ? 1 : i + 1);
 						}
-
 						List<Integer> keyList = new ArrayList<>(user.keySet());
 
 						for (Integer number : keyList) {
@@ -237,18 +218,14 @@ public class EngineerListController {
 							if (!industry.equals("") && industry != null) {
 								sSheet.setIndustry(industry);
 							}
-
 							if (!position.equals("") && position != null) {
 								sSheet.setPosition(position);
 							}
 							skill.add(sSheet);
 						}
-
 						IdCount++;
 					}
-
 				}
-
 			}
 		}
 
@@ -421,7 +398,6 @@ public class EngineerListController {
 			if (setSkill.getChargePhase() != null) {
 				setSkill.setAllSkill(setSkill.getAllSkill() + "\n" + setSkill.getChargePhase());
 			}
-
 			UserInformation userInfo = new UserInformation();
 
 			userInfo.setAllSkill(setSkill.getAllSkill());

@@ -435,7 +435,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="77" splitType="Stretch">
+		<band height="141" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
 				<reportElement key="" stretchType="RelativeToBandHeight" mode="Opaque" x="10" y="0" width="11" height="77" isPrintWhenDetailOverflows="true" backcolor="#D4D4D4" uuid="60025f44-be7d-423d-9753-4d3b89773a2c">

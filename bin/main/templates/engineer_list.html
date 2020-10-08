@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/css/unity.css}">
 <link rel="stylesheet" th:href="@{/css/engineer.css}">
-<script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/list.js}" charset="UTF-8"></script>
 <head>
 <meta charset="UTF-8">
@@ -10,52 +11,53 @@
 </head>
 <body>
 	<header th:insert="/header"></header>
-<main>
-<div>
+	<main>
+		<div>
 			<h1 class="pagetitle">エンジニア一覧</h1>
-			<p class="errorMessage" th:text="エラーメッセージがここに入ります"></p>
-      <form th:action="@{engineer_search}" th:method="post" >
-			<input type="submit" value="戻る" class="backButton right defolt">
-      </form>
+
+			<form th:action="@{engineer_search}" th:method="post">
+				<input type="submit" value="戻る" class="backButton right defolt">
+			</form>
 			<!-- <input type="submit" value="戻る" class="backButton"> -->
 		</div>
 
-	<div class="resultList">
-		<div class="listSort">
-			<p><b class="right" th:text="'表示件数 ' + ${count} + '件'"></b></p>
-		</div>
+		<div class="resultList">
+			<div class="listSort">
+				<p>
+					<b class="right" th:text="'表示件数 ' + ${count} + '件'"></b>
+				</p>
+			</div>
 			<table class="resultTable tablesorter" id="myTable">
-			<thead>
+				<thead>
 
-				<tr class="tableTitle">
-					<th>氏名</th>
-					<th>会社名</th>
-					<th>事業部</th>
-					<th>担当<br>営業</th>
-					<th>メール<br>アドレス</th>
-					<th>検索結果</th>
-					<th>稼働<br>状況</th>
-					<th class="noimage">スキル<br>シート</th>
-				</tr>
-				 </thead>
-
-				 <tbody>
-				<tr th:each="userInfo : ${userInfo}" th:object="${userInfo}">
-					<td th:text="*{userName}"></td>
-					<td>PDR</td>
-					<td>開発事業部</td>
-					<td>か担当営業</td>
-					<td th:text="*{userMail}"></td>
-					<td><pre th:text="*{allSkill}"></pre> </td>
-					<td>提案不可</td>
-					<td><form th:action="@{skillsheet_reference}" th:method="post">
+					<tr class="tableTitle">
+						<th>氏名</th>
+						<th>会社名</th>
+						<th>事業部</th>
+						<th>担当 <br> 営業</th>
+						<th>メール <br> アドレス</th>
+						<th>検索結果</th>
+						<th>稼働 <br> 状況</th>
+						<th class="noimage">スキル <br> シート</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="userInfo:${userInfo}" th:object="${userInfo}">
+						<td th:text="*{userName}"></td>
+						<td>PDR</td>
+						<td>開発事業部</td>
+						<td>か担当営業</td>
+						<td th:text="*{userMail}"></td>
+						<td><pre th:text="*{allSkill}"></pre></td>
+						<td>提案不可</td>
+						<td><form th:action="@{skillsheet_reference}" th:method="post">
 					    <input type="hidden" name="userId" th:value="*{userId}">
+					     <input type="hidden" name="flg" value="1">
 						<input type="submit"  class="nonhoverdefolt backglay" th:value="参照">
-					</form></td>
-				</tr>
-			</tbody>
+					    </form></td>
+				</tbody>
 			</table>
-	</div>
-</main>
+		</div>
+	</main>
 </body>
 </html>
