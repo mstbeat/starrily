@@ -76,6 +76,6 @@ $('.deleteproject').click(function(){
 		sessionStorage.removeItem("languageDelete");
 		sessionStorage.removeItem("otherArrayNum");
 		sessionStorage.removeItem("otherDelete");
-		//　他の方がセッションストレージを使っていない場合使う
+		//他の方がセッションストレージを使っていない場合使う
 //		sessionStorage.clear();
 	}

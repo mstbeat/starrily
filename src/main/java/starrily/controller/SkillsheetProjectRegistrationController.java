@@ -52,10 +52,10 @@ public class SkillsheetProjectRegistrationController {
 		// SkillSheetのインスタンスを渡す
 		model.addAttribute("skillSheet", new SkillSheet());
 		// 権限取得 マージした時用
-		//		model.addAttribute("role", service.getUserRole(skillSheet.getUserId()));
+		//	model.addAttribute("role", service.getUserRole(skillSheet.getUserId()));
 		// userIdを取得
 		// 案件追加画面に情報を送る マージした時用
-		//		model.addAttribute("userID", skillSheet.getUserId());
+		//	model.addAttribute("userID", skillSheet.getUserId());
 		// userIdを案件追加画面に送る（マージした時は消す）
 		model.addAttribute("userID", 1);
 		// プルダウンDB取得

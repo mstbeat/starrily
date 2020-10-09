@@ -9,10 +9,27 @@ let osVerPulArrayNum = 0 ;
 let osArrayNum = 0;
 // add_lang.addEventListener()メソッドが呼ばれた回数
 let languageVerPulArrayNum = 0;
-//add_lang2.addEventListener()メソッドが呼ばれた回数
+// add_lang2.addEventListener()メソッドが呼ばれた回数
 let languageArrayNum = 0;
-//add_other.addEventListener()メソッドが呼ばれた回数
+// add_other.addEventListener()メソッドが呼ばれた回数
 let otherArrayNum = 0;
+// DBプルダウン入力フォームを削除メソッドが呼ばれた回数
+let dbPulDelete = 0;
+// DBの入力フォームを削除メソッドが呼ばれた回数
+let dbDelete = 0;
+// FW/NWの入力フォームを削除メソッドが呼ばれた回数
+let fwNwDelete = 0;
+// OSプルダウン入力フォームを削除メソッドが呼ばれた回数
+let osPulDelete = 0;
+// OSの入力フォームを削除メソッドが呼ばれた回数
+let osDelete = 0;
+// 言語プルダウンの入力フォームを削除メソッドが呼ばれた回数
+let languagePulDelete = 0;
+// 言語の入力フォームを削除メソッドが呼ばれた回数
+let languageDelete = 0;
+// その他の入力フォームを削除メソッドが呼ばれた回数
+let otherDelete = 0;
+
 
 $(function() {
   var $children = $('.children1');
@@ -27,6 +44,7 @@ $(function() {
         $(this).not('optgroup,.msg1').remove();
       }
     });
+
     if ($(this).val() === '') {
       $children.attr('disabled', 'disabled');
     } else {
@@ -54,6 +72,7 @@ $(function() {
     } else {
       $children.removeAttr('disabled');
     }
+
   });
 });
 
@@ -76,7 +95,6 @@ $(function() {
     } else {
       $children.removeAttr('disabled');
     }
-
   });
 });
 
@@ -167,10 +185,10 @@ jQuery(function($) {
       '</p>');
 });
 
-  //add_dbクラスのついたボタンが押されたとき、DB欄を増やす
+//add_dbクラスのついたボタンが押されたとき、DB欄を増やす
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
   // idが「add_db」の要素を取得
-  let add_db = document.getElementById("add_db");
+  let add_db = document.getElementById("add_db")|| document.createElement('input');;
 
   add_db.addEventListener("click", function(){
 	 //idが「box_db」の要素を取得
@@ -254,7 +272,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「addb_db2」の要素を取得
-  let add_db2 = document.getElementById("add_db2");
+  let add_db2 = document.getElementById("add_db2")|| document.createElement('input');;
 
   add_db2.addEventListener("click", function(){
 	  //idが「box_db2」の要素を取得
@@ -343,7 +361,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_fw」の要素を取得
-  let add_fw = document.getElementById("add_fw");
+  let add_fw = document.getElementById("add_fw")|| document.createElement('input');;
 
   add_fw.addEventListener("click", function(){
 	  //idが「box_fw」の要素を取得
@@ -432,7 +450,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_os」の要素を取得
-  let add_os = document.getElementById("add_os");
+  let add_os = document.getElementById("add_os")|| document.createElement('input');;
 
   add_os.addEventListener("click", function(){
 	  //idが「box_os」の要素を取得
@@ -516,7 +534,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_os2」の要素を取得
-  let add_os2 = document.getElementById("add_os2");
+  let add_os2 = document.getElementById("add_os2")|| document.createElement('input');;
 
   add_os2.addEventListener("click", function(){
 	  //idが「box_os2」の要素を取得
@@ -605,7 +623,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_lang」の要素を取得
-  let add_lang = document.getElementById("add_lang");
+  let add_lang = document.getElementById("add_lang")|| document.createElement('input');;
 
   add_lang.addEventListener("click", function(){
 	  //idが「box_lang」の要素を取得
@@ -689,7 +707,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_lang2」の要素を取得
-  let add_lang2 = document.getElementById("add_lang2");
+  let add_lang2 = document.getElementById("add_lang2")|| document.createElement('input');;
 
   add_lang2.addEventListener("click", function(){
 	  //idが「box_lang」の要素を取得
@@ -698,7 +716,7 @@ jQuery(function($) {
 	  let clone = box_lang2.cloneNode(true)
 	  // add_lang2.addEventListener()メソッドが呼ばれた回数
 	  languageArrayNum++;
-	  // メソッド呼ばれた回数取得　クローンするたびIDにプラス1ずつ足していく
+	  // メソッド呼ばれた回数取得クローンするたびIDにプラス1ずつ足していく
 	  // 登録ボタンを押しておらず、尚且つ削除もしていない場合
 	  if (sessionStorage.getItem("languageArrayNum") == null
 			  && sessionStorage.getItem("languageDelete") == null
@@ -778,7 +796,7 @@ jQuery(function($) {
   // セレクトボックス＋テキストボックス＋削除ボタン。を挿入する
 
   //idが「add_other」の要素を取得
-  let add_other = document.getElementById("add_other");
+  let add_other = document.getElementById("add_other")|| document.createElement('input');;
 
   add_other.addEventListener("click", function(){
 	  //idが「box_other」の要素を取得
