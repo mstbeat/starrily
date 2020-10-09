@@ -6,17 +6,27 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/unity.css">
 <link rel="stylesheet" type="text/css" href="css/skillsheet_update.css">
+<!-- <script type="text/javascript" th:src="@{/js/validateDate.js}"></script> -->
 <title>スキルシート更新-基本情報</title>
 </head>
 <body>
 	<header th:insert="/header"></header>
 	<main>
+		<form name="neame" th:method="POST" th:action="@{skillsheet_reference}" th:object="${skillSheet}">
+		 <input type="hidden" name="userId" th:field="*{userId}">
+		 <input type="hidden" name="flg" value="0">
+    　  </form>
+	<form name="test1" th:method="POST" id="userForm" th:action="@{/skillsheet_inf}" th:object="${skillSheet}">
 		<div>
 			<h1 class="pagetitle">基本情報更新</h1>
-			<p class="errorMessage">エラーメッセージがここに入ります</p>
+			<div class="errorMessage">
+
+          <ul th:if="${#fields.hasAnyErrors()}">
+            <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+          </ul>
+      </div>
 		</div>
 
-	<form th:method="PUT" th:action="@{/skillsheet_information_update}" th:object="${skillSheetBasicList}">
 	  <div class="box">
 			<p class="RequiredMessage left">※は必須項目です</p>
 			<div class="tablepaddig">
@@ -27,7 +37,7 @@
 						</div>
 						<div class="flex-4item-2">
 							<p class="top0">
-						      <p class="top0"><label th:text="*{userName}">サンプル太郎</label>
+						      <p class="top0"><label th:field="*{userName}">サンプル太郎</label>
 							</p>
 						</div>
 					</div>
@@ -58,7 +68,7 @@
 						</div>
 						<div class="flex-4item-2">
 						  <select class="infomationinput" th:field="*{userFinalEducation}">
-						   <option th:each="dropdownInfo: ${dropdownInfo}" th:value="${dropdownInfo.itemName}"
+						    <option th:each="dropdownInfo: ${dropdownInfo}" th:value="${dropdownInfo.itemName}"
 							  th:text="${dropdownInfo.itemName}"></option>
 						  </select>
 						</div>
@@ -85,6 +95,7 @@
 						</div>
 						<div class="flex-4item-2">
 							<span class="leftmargin" th:text="*{userAge}"></span>&emsp; 歳
+              <input type="hidden" th:field="*{userAge}" th:value="${userAge}" />
 						</div>
 					</div>
 					<div class="flex-4item flex-container">
@@ -124,24 +135,25 @@
 						<textarea id="textareaHight" th:field="*{userRemarks}"></textarea>
 					</div>
 				</div>
-			</div>
-		</div>
-
-		<div class="centerbox">
-            <!-- <div class="lineup" th:if="${role >= 5}"> -->
-			<div class="lineup">
-				<input type="submit" value="更新" class="submitButton defolt bottomwidth width">
-				 <input type="hidden" name="userId" th:field="*{userId}">
-				 <input type="hidden" name="updateDate" th:field="*{updateDate}">
-			</div>
-
-			<div class="lineup">
-			   <input type="button" onclick="history.back()" value="戻る" class="backButton defolt bottomwidth width">
+		        <input type="hidden" name="userId" th:field="*{userId}">
+	            <input type="hidden" name="flg" value="0">
+	            <input type="hidden" name="updateDate" th:field="*{updateDate}">
 			</div>
 		</div>
 	</form>
-
-
+       <div class="centerbox">
+         <!-- <div class="lineup" th:if="${role >= 5}"> -->
+		 <div class="lineup">
+		   <a href="javascript:test1.submit()" style="border: none;">
+		     <input type="submit" value="更新" class="submitButton defolt bottomwidth width">
+	       </a>
+	   </div>
+      <div class="lineup">
+	      <a href="javascript:neame.submit()" style="border: none;">
+		   <input type="submit" value="戻る" class="backButton defolt bottomwidth width">
+	      </a>
+	     </div>
+		</div>
 	</main>
 	<script type="text/javascript" src="js/unity.js"></script>
 </body>

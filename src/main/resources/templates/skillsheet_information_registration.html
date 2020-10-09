@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="jp">
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/unity.css">
+<link rel="stylesheet" type="text/css" href="css/skillsheet_update.css">
+<title>スキルシート登録-基本情報</title>
+</head>
+<body>
+	<header th:insert="/header"></header>
+	<main>
+		<form th:method="POST" th:action="@{/skillsheet_information_registration}" th:object="${skillSheet}">
+		    <input type="hidden" th:field="*{userId}">
+			<input type="hidden" name="flg" value="0">
+			<div>
+				<h1 class="pagetitle">基本情報登録</h1>
+				<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
+
+				<p class="errorMessage systemMessage"
+					th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+			</div>
+			<div class="box">
+				<p class="RequiredMessage left">※は必須項目です</p>
+				<div class="tablepaddig">
+					<div class="flex-container">
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">氏名</p>
+							</div>
+							<div class="flex-4item-2">
+							<!-- <p class="top0" th:text="*{userName}"></p> -->
+							<input class="infomationinput bottommargin" type="text" th:field="*{userName}">
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									性別<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<p>
+									<input class="radio" type="radio" value="男"
+										th:field="*{userSex}" checked="checked">男
+										<input class="radio" type="radio" value="女" th:field="*{userSex}">女
+								</p>
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									生年月日<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<p>
+									<input type="date" class="infomationinput bottommargin date-input" id="date"
+										th:field="*{userBirthday}">
+								</p>
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									最終学歴<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<select class="infomationinput" th:field="*{userFinalEducation}">
+									<option th:each="education : ${educationDropdown}" th:text="${education.itemName}" th:value="${education.itemName}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									イニシャル<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<input class="infomationinput bottommargin" type="text"
+									th:field="*{userInitialName}">
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									現住所<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<input class="infomationinput bottommargin" type="text"
+									th:field="*{userAddress}">
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">年齢</p>
+							</div>
+							<div class="flex-4item-2">
+								<p>
+									<label id="age"></label> <span class="leftmargin">歳</span>
+								</p>
+							</div>
+						</div>
+						<div class="flex-4item flex-container">
+							<div class="flex-4item-1">
+								<p class="headline">
+									最寄駅<span class="errorMessage">※</span>
+								</p>
+							</div>
+							<div class="flex-4item-2">
+								<p>
+									<input type="text" class="inputSubway"
+										th:field="*{userStationLine}"><span>線</span><br>
+									<input type="text" class="inputSubway bottommargin"
+										th:field="*{userStation}"><span>駅</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="flex-container">
+						<div class="flex-2item-1">
+							<p class="headline top0">
+								得意分野<span class="errorMessage">※</span>
+							</p>
+						</div>
+						<div class="flex-2item-2">
+							<textarea class="borderbox" id="textareaHight"
+								th:field="*{userAppeal}"></textarea>
+						</div>
+						<div class="flex-2item-1">
+							<p class="headline top0">保有資格</p>
+						</div>
+						<div class="flex-2item-2">
+							<textarea class="borderbox" id="textareaHight"
+								th:field="*{userCertification}"></textarea>
+						</div>
+						<div class="flex-2item-1">
+							<p class="headline top0">備考</p>
+						</div>
+						<div class="flex-2item-2">
+						  <textarea id="textareaHight" th:field="*{userRemarks}"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="centerbox">
+				<div class="lineup">
+				  <input type="submit" value="登録" class="submitButton defolt bottomwidth width">
+				</div>
+				<div class="lineup">
+				  <a href="/engineer_search" class="defolt bottomwidth width backLink">戻る</a>
+				</div>
+			</div>
+		</form>
+	</main>
+	<script type="text/javascript" src="js/unity.js"></script>
+	<script type="text/javascript" src="js/ageconversion.js"></script>
+</body>
+</html>

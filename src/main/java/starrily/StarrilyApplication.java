@@ -8,6 +8,7 @@ public class StarrilyApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StarrilyApplication.class, args);
+
 	}
 
 }

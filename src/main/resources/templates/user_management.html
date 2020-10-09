@@ -18,9 +18,11 @@
 
 	<main>
 	<h1 class="pagetitle">ユーザー管理</h1>
-	<p class="errorMessage systemMessage" th:text="${errMessage}"></p>
 	<div class="bottomspace">
-		<input type="button" onclick="history.back()" class="backButton right defolt" value="戻る">
+		<form th:method="post" th:action="@{engineer_search}">
+			<input type="submit" class="backButton right defolt" value="戻る">
+			<input type="hidden" th:value="${userID}" name="userId">
+		</form>
 		<form th:action="@{/user_registration}" th:method="post">
 			<input type="submit" class="submitButton right defolt" value="新規登録"></input>
 		</form>
@@ -28,95 +30,32 @@
 
 	<div class="box boxtopspace">
 		<div class="box-title">ユーザー検索</div>
-		<form th:action="@{/user_management}" th:method="put">
+		<form th:action="@{user_management}" th:method="put" th:object="${userInformation}">
+			<ul  class="position">
+				<li th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}" class="errorMessage"></li>
+			</ul>
 			<div class="boxheightsize">
 				<input type="submit" class="add right defolt" value="検索"></input>
 
 				<div class="flexbox">
 					<div class="flexitem">
 						<p class="inputtitle bottom0 top0">
-							氏名<input type="text" class="serchbox bottom0" />
+							氏名<input type="text" class="serchbox bottom0" th:field="*{userName}" />
 						</p>
 						<p class="top0 attention">※ひらがな部分一致検索</p>
 					</div>
 					<div class="flexitem">
 						<p class="inputtitle top0">
-							権限<select class="serchselect">
-								<option value=”0”>指定なし</option>
-								<option value=”1”>一般社員</option>
-								<option value=”2”>現場リーダー</option>
-								<option value=”3”>事業部リーダー</option>
-								<option value=”4”>管理者(管理営業,社長)</option>
+							権限<select th:field="*{authority}">
+								<option value="指定なし">指定なし</option>
+								<option th:each="role : ${roleDropdown}" th:text="${role.itemName}" th:value="${role.itemName}"
+										class="serchselect" th:selected="${role.itemName == choiceAuthority}"></option>
 							</select>
 						</p>
 					</div>
 				</div>
 			</div>
 		</form>
-	</div>
-
-	<div class="box boxsidespace">
-		<div class="box-title">検索結果</div>
-		<div class="listSort">
-			<p>
-				<b class="right">表示件数 ○件</b>
-			</p>
-		</div>
-		<table class="resultTable" id="myTable">
-			<thead>
-				<tr class="tableTitle">
-					<th class="table20">メールアドレス</th>
-					<th class="table20">氏名</th>
-					<th class="table20">権限</th>
-					<th class="table15 noimage">パスワード変更</th>
-					<th class="table15 noimage">ユーザー情報変更</th>
-					<th class="table10 noimage">削除</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="userInfo : ${userInformation}" th:object="${userInfo}">
-					<td th:text="*{userMail}"></td>
-					<td th:text="*{userName}"></td>
-					<td th:text="*{authority}"></td>
-					<td>
-						<form th:action="@{/user_password_change}" th:method="post" class="center">
-							<input type="submit" value="パスワード変更" class="nonhoverdefolt changeButton">
-						</form>
-					</td>
-					<td>
-						<form th:action="@{/user_information}" th:method="post" class="center">
-							<input type="submit" value="ユーザー情報変更" class="nonhoverdefolt changeButton backyellow">
-						</form>
-					</td>
-					<td>
-						<form th:action="@{/user_management}" th:method="delete" class="center">
-							<input type="submit" value="削除" class="delete nonhoverdefolt backglay">
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td>xxxx＠xxx.jp</td>
-					<td>田中サンプル</td>
-					<td>一般社員</td>
-					<td>
-						<form th:action="@{/user_password_change}" th:method="post" class="center">
-							<input type="submit" value="パスワード変更" class="nonhoverdefolt changeButton">
-						</form>
-					</td>
-					<td>
-						<form th:action="@{/user_information}" th:method="post" class="center">
-							<input type="submit" value="ユーザー情報変更" class="nonhoverdefolt changeButton backyellow">
-						</form>
-					</td>
-					<td>
-						<form th:action="@{/user_management}" th:method="delete" class="center">
-							<input type="submit" value="削除" class="delete nonhoverdefolt backglay">
-						</form>
-					</td>
-				</tr>
-
-			</tbody>
-		</table>
 	</div>
 	</main>
 </body>

@@ -18,8 +18,6 @@ import starrily.bean.UserInformation;
 @Mapper
 public interface StarrilyMapper {
 
-	public SkillSheet getSkillSheetBase(int userId);
-
 	/**
 	* ドロップダウン情報取得.
 	* @param itemNumber ドロップダウンのitem_numberの値
@@ -29,10 +27,10 @@ public interface StarrilyMapper {
 
 	/**
 	* 基本情報更新.
-	* @param skillSheet スキルシートbeanクラス
+	* @param skillsheet スキルシートbeanクラス
 	* @return スキルシートbeanクラス
 	*/
-	public int updateBasicInformation(SkillSheet skillSheet);
+	public int updateBasicInformation(SkillSheet skillsheet);
 
 	/**
 	* 権限取得.
@@ -88,7 +86,7 @@ public interface StarrilyMapper {
 	 * @param userId ユーザーID
 	 * @return 基本情報
 	 */
-	public List<SkillSheet> getSkillSheetBasic(int userId);
+	public SkillSheet getSkillSheetBasic(int userId);
 
 	/**
 	 * 案件基本情報取得.
@@ -209,7 +207,7 @@ public interface StarrilyMapper {
 	 * ユーザー情報更新.
 	 * @param userInformation ユーザー情報beanクラス
 	 */
-	public void updateUserInformation(UserInformation userInformation);
+	public int updateUserInformation(UserInformation userInformation);
 
 	/**
 	 * ユーザー情報削除.
@@ -246,5 +244,40 @@ public interface StarrilyMapper {
 	 * @return スキルシートbeanクラス
 	 */
 	public List<SkillSheet> getPulldownProjectOther();
+
+	/**
+	 * ユーザー情報ユーザーID取得
+	 * @param userMail ログインユーザーメールアドレス
+	 * @return ユーザー情報beanクラス
+	 */
+	public UserInformation getUserId(String userMail);
+
+	/**
+	 * ユーザー情報取得
+	 * @param userId ユーザーID
+	 * @return ユーザー情報beanクラス
+	 */
+	public UserInformation getUserInformation(int userId);
+
+	/**
+	 * 全ユーザーを検索.
+	 * @return スキルシートbeanクラス
+	 */
+	public List<UserInformation> searchAllUser();
+
+	/**
+	 * ユーザーを検索.
+	 * @return スキルシートbeanクラス
+	 */
+	public UserInformation searchUserIndividual(int userId);
+
+	/**
+	 * 権限情報更新.
+	 * @param userInformation ユーザー情報
+	 * @return 更新件数
+	 */
+	public int updateUserRole(UserInformation userInformation);
+
+
 
 }

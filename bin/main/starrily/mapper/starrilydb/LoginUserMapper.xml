@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="starrily.mapper.starrilydb.LoginUserMapper">
+  <!--メールアドレスに基づいてユーザー情報取得-->
+  <select id="findUser" resultType="starrily.bean.LoginUser">
+    SELECT
+      SUI.user_mail As userMail
+    FROM
+      starrilyUserInfo SUI
+    WHERE
+      user_mail = #{userId}
+  </select>
+  <!-- 全てのユーザー情報取得 -->
+  <select id="userInformationList" resultType="starrily.bean.UserInformation">
+  	SELECT
+		user_id AS userId,
+		user_mail AS userMail,
+		user_name AS userName,
+		update_date AS updateDate
+	FROM
+		starrilyuserinfo
+	WHERE
+		delete_flg = '0'
+  </select>
+  <!-- ユーザー情報検索 -->
+  <select id ="searchUserInfo" resultType="starrily.bean.UserInformation" parameterType="starrily.bean.UserInformation">
+  	SELECT
+  		starrilyuserinfo.user_id AS userId,
+  		user_mail AS userMail,
+  		user_name AS userName,
+  		update_date AS updateDate,
+  		user_role AS authority
+  	FROM
+  		starrilyuserinfo
+  	INNER JOIN
+  		starrilyrole
+  	ON
+  	    starrilyuserinfo.user_id = starrilyrole.user_id
+  	<where>
+  		delete_flg = '0'
+  		<if test="userName != null and authority != '指定なし'">
+			AND user_phonetic LIKE'%${userPhonetic}%'
+			AND user_role = #{authorityInt}
+  		</if>
+  		<if test="authority = '指定なし'">
+  			AND user_phonetic LIKE'%${userPhonetic}%'
+  		</if>
+  		<if test="userName = null">
+  			AND user_role = #{authorityInt}
+  		</if>
+  	</where>
+  </select>
+</mapper>
